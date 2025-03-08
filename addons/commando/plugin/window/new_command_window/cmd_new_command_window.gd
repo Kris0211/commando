@@ -24,14 +24,19 @@ func populate(p_category_map: Dictionary) -> void:
 	
 	for cat: String in p_category_map.keys():
 		var category := CATEGORY_SCENE.instantiate() as EditorCmdCommandCategory
-		var category_name := cat.to_snake_case()
 		_category_container.add_child(category)
-		category.set_category_name(cat.capitalize())
-		category.set_category_color(Cmd.Config.colors[category_name])
-		var scripts_path := str(Cmd.Config.command_root_dir + category_name)
-		var command_scripts: PackedStringArray = \
-			DirAccess.get_files_at(scripts_path)
 		
+		var category_name := cat.to_snake_case()
+		category.set_category_name(cat.capitalize())
+		
+		var _category_color = Cmd.Config.colors.get(category_name)
+		if _category_color == null:
+			_category_color = Cmd.Config.colors.get("default")
+		
+		category.set_category_color(_category_color)
+		
+		var scripts_path := str(Cmd.Config.command_root_dir + category_name)
+		var command_scripts := DirAccess.get_files_at(scripts_path)
 		for script: String in command_scripts:
 			# Currently only supports GDScript.
 			if !script.ends_with(".gd"):
