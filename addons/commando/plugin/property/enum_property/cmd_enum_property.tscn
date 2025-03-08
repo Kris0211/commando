@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://6c4rsbjmuh83"]
+
+[ext_resource type="Script" uid="uid://dhqflkk74qqt2" path="res://addons/commando/plugin/property/enum_property/cmd_enum_property.gd" id="1_feshg"]
+
+[node name="CmdEnumProperty" type="HBoxContainer"]
+size_flags_vertical = 4
+script = ExtResource("1_feshg")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Property Name"
+text_overrun_behavior = 1
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3

@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtyw12xlafjpe"]
+
+[ext_resource type="Script" uid="uid://dnmfktwxd4nhe" path="res://addons/commando/plugin/property/string_multiline_property/cmd_string_multiline_property.gd" id="1_m54vo"]
+
+[node name="CmdStringMultilineProperty" type="VBoxContainer"]
+script = ExtResource("1_m54vo")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Property Name"
+text_overrun_behavior = 1
+
+[node name="TextEdit" type="TextEdit" parent="."]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+wrap_mode = 1

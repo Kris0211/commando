@@ -1,0 +1,144 @@
+[gd_scene load_steps=8 format=3 uid="uid://bfe3c30elt8wv"]
+
+[ext_resource type="Script" uid="uid://ceccdf0orrrgi" path="res://addons/commando/plugin/widget/condition_branch_widget/cmd_condition_branch_widget.gd" id="1_c5748"]
+[ext_resource type="Script" uid="uid://ckcai2bfx2mj8" path="res://addons/commando/plugin/ui/cmd_widget_top_panel.gd" id="2_dwmio"]
+[ext_resource type="Script" uid="uid://bl7u2j6sc0ivp" path="res://addons/commando/plugin/ui/cmd_widget_container.gd" id="4_1yu87"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eyc6x"]
+bg_color = Color(0.25098, 0.266667, 0.298039, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arpe5"]
+bg_color = Color(0.25098, 0.266667, 0.298039, 0.501961)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bw64u"]
+bg_color = Color(0.145098, 0.168627, 0.203922, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_elq47"]
+bg_color = Color(0.145098, 0.168627, 0.203922, 1)
+
+[node name="CmdConditionBranchWidget" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+script = ExtResource("1_c5748")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TopPanel" type="PanelContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eyc6x")
+script = ExtResource("2_dwmio")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TopPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="WidgetIcon" type="TextureRect" parent="VBoxContainer/TopPanel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+stretch_mode = 3
+
+[node name="WidgetName" type="Label" parent="VBoxContainer/TopPanel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "Command"
+
+[node name="ContentPanel" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_arpe5")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ContentPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ContentContainer" type="VBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ConditionButton" type="Button" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(108, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Set condition"
+text_overrun_behavior = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer"]
+layout_mode = 2
+
+[node name="ToggleTrueButton" type="Button" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+text = "v"
+flat = true
+
+[node name="Label" type="Label" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Commands If True"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bw64u")
+
+[node name="IfTrueContainer" type="VBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_constants/separation = 10
+script = ExtResource("4_1yu87")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer"]
+layout_mode = 2
+
+[node name="ToggleFalseButton" type="Button" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+text = ">"
+flat = true
+
+[node name="Label" type="Label" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer/HBoxContainer"]
+layout_mode = 2
+text = "Commands If False"
+horizontal_alignment = 1
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_elq47")
+
+[node name="IfFalseContainer" type="VBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer/ContentContainer/PanelContainer2"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_constants/separation = 10
+script = ExtResource("4_1yu87")

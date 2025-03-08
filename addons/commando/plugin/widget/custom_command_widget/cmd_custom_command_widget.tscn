@@ -1,0 +1,94 @@
+[gd_scene load_steps=5 format=3 uid="uid://0qpx3w3kefxs"]
+
+[ext_resource type="Script" uid="uid://bpkp2ynsmqvvr" path="res://addons/commando/plugin/widget/custom_command_widget/cmd_custom_command_widget.gd" id="1_h7jdr"]
+[ext_resource type="Script" uid="uid://ckcai2bfx2mj8" path="res://addons/commando/plugin/ui/cmd_widget_top_panel.gd" id="2_ssyw1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eyc6x"]
+bg_color = Color(0.25098, 0.266667, 0.298039, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arpe5"]
+bg_color = Color(0.25098, 0.266667, 0.298039, 0.501961)
+
+[node name="CmdCustomCommandWidget" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+script = ExtResource("1_h7jdr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TopPanel" type="PanelContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eyc6x")
+script = ExtResource("2_ssyw1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TopPanel"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="WidgetIcon" type="TextureRect" parent="VBoxContainer/TopPanel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+stretch_mode = 3
+
+[node name="WidgetName" type="Label" parent="VBoxContainer/TopPanel/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "Command"
+
+[node name="ContentPanel" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_arpe5")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ContentPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="CommandButtons" type="HBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ScriptButton" type="Button" parent="VBoxContainer/ContentPanel/MarginContainer/VBoxContainer/CommandButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(108, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Assign script..."
+text_overrun_behavior = 1
+
+[node name="EditButton" type="Button" parent="VBoxContainer/ContentPanel/MarginContainer/VBoxContainer/CommandButtons"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(108, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit Script"
+text_overrun_behavior = 1
+
+[node name="ContentContainer" type="VBoxContainer" parent="VBoxContainer/ContentPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10

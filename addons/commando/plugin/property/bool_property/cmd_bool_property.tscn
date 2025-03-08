@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvbbp0drl8xy5"]
+
+[ext_resource type="Script" uid="uid://md25mw3nk3ky" path="res://addons/commando/plugin/property/bool_property/cmd_bool_property.gd" id="1_ujtlm"]
+
+[node name="CmdBoolProperty" type="HBoxContainer"]
+size_flags_vertical = 4
+script = ExtResource("1_ujtlm")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Property Name"
+text_overrun_behavior = 1
+
+[node name="CheckBox" type="CheckBox" parent="."]
+layout_mode = 2
+size_flags_horizontal = 10

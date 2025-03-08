@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://bunptjlw6ppj6"]
+
+[ext_resource type="Script" uid="uid://qaws04k5jtyp" path="res://addons/commando/plugin/property/resource_property/cmd_resource_property.gd" id="1_eawb4"]
+
+[node name="CmdResourceProperty" type="HBoxContainer"]
+size_flags_vertical = 4
+script = ExtResource("1_eawb4")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Property Name"
+text_overrun_behavior = 1
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(108, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "<empty>"
+text_overrun_behavior = 1

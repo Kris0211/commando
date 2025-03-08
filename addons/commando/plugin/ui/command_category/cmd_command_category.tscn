@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://drt1fyjb7gern"]
+
+[ext_resource type="Script" uid="uid://djav4gj3gjxum" path="res://addons/commando/plugin/ui/command_category/cmd_command_category.gd" id="1_abl4b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_so7rt"]
+bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[node name="CmdCommandCategory" type="PanelContainer"]
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_so7rt")
+script = ExtResource("1_abl4b")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="CategoryName" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CATEGORY_NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackgroundPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BackgroundPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="ContentContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BackgroundPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2

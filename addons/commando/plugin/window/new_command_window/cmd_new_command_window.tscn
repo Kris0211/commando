@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://ciiaidl6k6gn7"]
+
+[ext_resource type="Script" uid="uid://bx4jn174gkyar" path="res://addons/commando/plugin/window/new_command_window/cmd_new_command_window.gd" id="1_nqrrc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nugg7"]
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+
+[node name="CmdNewCommandWindow" type="Window"]
+disable_3d = true
+title = "Add New Command"
+initial_position = 4
+size = Vector2i(600, 800)
+transient = true
+transient_to_focused = true
+exclusive = true
+popup_window = true
+min_size = Vector2i(600, 800)
+script = ExtResource("1_nqrrc")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_nugg7")
+
+[node name="AllCommandsContainer" type="VBoxContainer" parent="ScrollContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer/PanelContainer/AllCommandsContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/PanelContainer/AllCommandsContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="CategoryContainer" type="GridContainer" parent="ScrollContainer/PanelContainer/AllCommandsContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2

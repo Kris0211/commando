@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://mdocix2kq5rx"]
+
+[ext_resource type="Script" uid="uid://0akxn7kt7v2n" path="res://addons/commando/plugin/property/number_property/cmd_number_property.gd" id="1_68vts"]
+
+[node name="CmdNumberProperty" type="HBoxContainer"]
+size_flags_vertical = 4
+script = ExtResource("1_68vts")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Property Name"
+text_overrun_behavior = 1
+
+[node name="SpinBox" type="SpinBox" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+allow_lesser = true

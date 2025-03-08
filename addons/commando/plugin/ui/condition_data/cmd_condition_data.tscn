@@ -1,0 +1,110 @@
+[gd_scene load_steps=3 format=3 uid="uid://brnpgrs85wv0i"]
+
+[ext_resource type="Script" uid="uid://ctitd12p4vud5" path="res://addons/commando/plugin/ui/condition_data/cmd_condition_data.gd" id="1_xedv1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ta5pi"]
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="CmdConditionData" type="PanelContainer"]
+offset_left = 2.0
+offset_right = 750.0
+offset_bottom = 32.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ta5pi")
+script = ExtResource("1_xedv1")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="LogicalOperatorButton" type="OptionButton" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 1
+item_count = 2
+popup/item_0/text = "AND"
+popup/item_0/id = 0
+popup/item_1/text = "OR"
+popup/item_1/id = 1
+
+[node name="LeftVariableTypeButton" type="OptionButton" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 1
+allow_reselect = true
+item_count = 3
+popup/item_0/text = "Value"
+popup/item_0/id = 0
+popup/item_1/text = "Global Variable"
+popup/item_1/id = 1
+popup/item_2/text = "Local Variable"
+popup/item_2/id = 2
+
+[node name="LeftVariableValueEdit" type="LineEdit" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "name"
+alignment = 3
+
+[node name="ComparisonOperatorButton" type="OptionButton" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 6
+popup/item_0/text = "Equals (==)"
+popup/item_0/id = 0
+popup/item_1/text = "Not Equals (!=)"
+popup/item_1/id = 1
+popup/item_2/text = "Less Than (<)"
+popup/item_2/id = 2
+popup/item_3/text = "Less Or Equal (<=)"
+popup/item_3/id = 3
+popup/item_4/text = "Greater Than (>)"
+popup/item_4/id = 4
+popup/item_5/text = "Greater Equals (>=)"
+popup/item_5/id = 5
+
+[node name="RightVariableTypeButton" type="OptionButton" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+allow_reselect = true
+item_count = 3
+popup/item_0/text = "Value"
+popup/item_0/id = 0
+popup/item_1/text = "Global Variable"
+popup/item_1/id = 1
+popup/item_2/text = "Local Variable"
+popup/item_2/id = 2
+
+[node name="RightVariableValueEdit" type="LineEdit" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "value "
+alignment = 3
+
+[node name="DeleteButton" type="Button" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(31, 31)
+layout_mode = 2
+text = "X"
+
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/LogicalOperatorButton" to="." method="_on_logical_operator_button_item_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/LeftVariableTypeButton" to="." method="_on_left_variable_type_button_item_selected"]
+[connection signal="focus_exited" from="MarginContainer/HBoxContainer/LeftVariableValueEdit" to="." method="_on_left_variable_value_edit_edited"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/ComparisonOperatorButton" to="." method="_on_comparison_operator_button_item_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/RightVariableTypeButton" to="." method="_on_right_variable_type_button_item_selected"]
+[connection signal="focus_exited" from="MarginContainer/HBoxContainer/RightVariableValueEdit" to="." method="_on_right_variable_value_edit_edited"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
