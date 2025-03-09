@@ -116,6 +116,7 @@ func restore(data: Dictionary) -> void:
 #endregion
 
 
-func _on_signal_trigger(_arg1 = null, _arg2 = null, _arg3 = null) -> void:
+func _on_signal_trigger(_arg1 = null, _arg2 = null, 
+		_arg3 = null, _arg4 = null) -> void:
 	# Discard signal arguments and execute commands.
 	execute()

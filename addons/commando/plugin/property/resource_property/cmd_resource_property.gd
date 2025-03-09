@@ -62,6 +62,11 @@ func _validate_resource(p_resource: Resource) -> bool:
 	if p_resource == null:
 		return true
 	
+	# Check built-in resources
+	if p_resource.is_class(_allowed_type):
+		return true
+	
+	# Check custom resources
 	var script: Script = p_resource.get_script()
 	while script:
 		var script_class: StringName = script.get_global_name()
