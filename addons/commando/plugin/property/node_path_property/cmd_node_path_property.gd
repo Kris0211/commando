@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func _on_button_pressed() -> void:
-	EditorInterface.popup_node_selector(set_property_value, _allowed_types)
+	EditorInterface.popup_node_selector(_on_node_selected, _allowed_types)
 
 
 ## Sets property value. Value type is [NodePath].
@@ -18,21 +18,10 @@ func set_property_value(p_node_path: NodePath) -> void:
 	if p_node_path.is_empty(): # On cancel, do nothing
 		return
 	
-	var _root_node = EditorInterface.get_edited_scene_root()
-	var resolved_path: NodePath
-	
-	if p_node_path == ^"." || p_node_path == ^"..":
-		resolved_path = ^".."
-	elif _root_node.has_node(p_node_path):
-		resolved_path = _root_node.get_node(p_node_path).get_path()
-	else:
-		resolved_path = p_node_path
-	
-	
 	var fetched_node := EditorCmdEventDock.event_node\
-			.get_node_or_null(resolved_path)
+			.get_node_or_null(p_node_path)
 	if fetched_node == null:
-		printerr("Unable to fetch node using path: %s" % resolved_path)
+		printerr("Unable to fetch node using path: %s" % p_node_path)
 		_clear_selection()
 		return
 	
@@ -48,11 +37,18 @@ func set_allowed_types(p_types: PackedStringArray) -> void:
 	_allowed_types = p_types
 
 
-func _find_event_root() -> Node:
-	if EditorCmdEventDock.event_node != null:
-		return EditorCmdEventDock.event_node.get_parent()
-	# Fallback
-	return EditorInterface.get_edited_scene_root().get_node(^"Events") 
+
+func _on_node_selected(p_node_path: NodePath) -> void:
+	if p_node_path.is_empty(): # On cancel, do nothing
+		return
+	
+	# The node path received from node selector
+	# is relative to scene root so it has to be converted 
+	# to be relative to GameEvent
+	var _root_node := EditorInterface.get_edited_scene_root()
+	var selected_node := _root_node.get_node(p_node_path)
+	var relative_path := EditorCmdEventDock.event_node.get_path_to(selected_node)
+	set_property_value(relative_path)
 
 
 func _clear_selection() -> void:
