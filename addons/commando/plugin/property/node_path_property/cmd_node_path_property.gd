@@ -37,7 +37,6 @@ func set_allowed_types(p_types: PackedStringArray) -> void:
 	_allowed_types = p_types
 
 
-
 func _on_node_selected(p_node_path: NodePath) -> void:
 	if p_node_path.is_empty(): # On cancel, do nothing
 		return
