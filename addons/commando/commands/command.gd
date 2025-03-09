@@ -1,5 +1,5 @@
 ## Base interface for event Commands.
-@icon("res://addons/icons/command/command.svg")
+@icon("res://addons/commando/icons/command.svg")
 class_name Command extends Resource
 
 ## Emitted when this [Command] is done executing its logic.

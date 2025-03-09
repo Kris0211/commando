@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://4vwrqjegqwpj"]
+[gd_scene load_steps=27 format=3 uid="uid://4vwrqjegqwpj"]
 
 [ext_resource type="Script" uid="uid://bsisyxx1jlypo" path="res://ExampleProject/dodge_the_creeps/Player.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://ftkxr8r4qghp" path="res://ExampleProject/dodge_the_creeps/art/playerGrey_walk1.png" id="2"]
@@ -7,10 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://bko65a0nd66st" path="res://ExampleProject/dodge_the_creeps/art/playerGrey_up2.png" id="5"]
 [ext_resource type="Script" uid="uid://nrxqi5vgjem8" path="res://addons/commando/commands/game_event.gd" id="6_yt1gb"]
 [ext_resource type="Script" uid="uid://cdhv2rc7v2g18" path="res://addons/commando/commands/command.gd" id="7_ej0f1"]
-[ext_resource type="Script" uid="uid://cq10x40pjhqpl" path="res://addons/commando/commands/node/toggle_visibility_2d.gd" id="8_1hqvm"]
-[ext_resource type="Script" uid="uid://c21eqqmq34iha" path="res://addons/commando/commands/node/emit_signal.gd" id="9_7u223"]
+[ext_resource type="Script" uid="uid://cq10x40pjhqpl" path="res://addons/commando/commands/node_2d/toggle_visibility.gd" id="8_1hqvm"]
+[ext_resource type="Script" uid="uid://c21eqqmq34iha" path="res://addons/commando/commands/advanced/emit_signal.gd" id="9_7u223"]
 [ext_resource type="Script" uid="uid://cgua0w41kmkfr" path="res://addons/commando/commands/physics/toggle_collision_2d.gd" id="10_lefeu"]
 [ext_resource type="Script" uid="uid://d25u12ul1xyw8" path="res://addons/commando/commands/sound/play_sound.gd" id="11_7u223"]
+[ext_resource type="AudioStream" uid="uid://dw26fpygeag8o" path="res://ExampleProject/dodge_the_creeps/art/gameover.wav" id="12_lefeu"]
+[ext_resource type="Script" uid="uid://cmce2dk8t6plj" path="res://addons/commando/commands/node_2d/tween_position.gd" id="13_wolua"]
 
 [sub_resource type="SpriteFrames" id="1"]
 animations = [{
@@ -76,6 +78,22 @@ collision_enabled = false
 
 [sub_resource type="Resource" id="Resource_lefeu"]
 script = ExtResource("11_7u223")
+sound_file = ExtResource("12_lefeu")
+
+[sub_resource type="Resource" id="Resource_o2feg"]
+script = ExtResource("13_wolua")
+node = NodePath("../Trail")
+position_x = 0.0
+position_y = 0.0
+duration = 2.0
+transition = 1
+ease = 2
+wait_for_finished = false
+
+[sub_resource type="Resource" id="Resource_ybfq7"]
+script = ExtResource("9_7u223")
+source_node = NodePath("../..")
+signal_name = ""
 
 [node name="Player" type="Area2D"]
 z_index = 10
@@ -100,5 +118,12 @@ process_material = SubResource("7")
 script = ExtResource("6_yt1gb")
 source_node = NodePath("..")
 signal_name = &"body_entered"
-event_commands = Array[ExtResource("7_ej0f1")]([SubResource("Resource_wolua"), SubResource("Resource_auqnc"), SubResource("Resource_s0vor"), SubResource("Resource_lefeu")])
+event_commands = Array[ExtResource("7_ej0f1")]([SubResource("Resource_wolua"), SubResource("Resource_auqnc"), SubResource("Resource_s0vor"), SubResource("Resource_lefeu"), SubResource("Resource_o2feg")])
+metadata/_custom_type_script = "uid://nrxqi5vgjem8"
+
+[node name="EventParent" type="Node2D" parent="."]
+
+[node name="GameEvent" type="Node" parent="EventParent"]
+script = ExtResource("6_yt1gb")
+event_commands = Array[ExtResource("7_ej0f1")]([SubResource("Resource_ybfq7")])
 metadata/_custom_type_script = "uid://nrxqi5vgjem8"

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://4vwrqjegqwpj" path="res://ExampleProject/dodge_the_creeps/Player.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://ccqoreueuxdb7" path="res://ExampleProject/dodge_the_creeps/HUD.tscn" id="4"]
 [ext_resource type="AudioStream" uid="uid://q2pf4fr8d0ks" path="res://ExampleProject/dodge_the_creeps/art/House In a Forest Loop.ogg" id="5"]
-[ext_resource type="AudioStream" uid="uid://dw26fpygeag8o" path="res://ExampleProject/dodge_the_creeps/art/gameover.wav" id="6"]
+[ext_resource type="Script" uid="uid://nrxqi5vgjem8" path="res://addons/commando/commands/game_event.gd" id="6_1fcw8"]
 
 [sub_resource type="Curve2D" id="1"]
 _data = {
@@ -13,7 +13,7 @@ _data = {
 }
 point_count = 5
 
-[node name="Main" type="Node"]
+[node name="Node" type="Node"]
 script = ExtResource("1")
 mob_scene = ExtResource("2")
 
@@ -49,11 +49,19 @@ curve = SubResource("1")
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5")
 
-[node name="DeathSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("6")
+[node name="Events" type="Node" parent="."]
+
+[node name="NewGameEvent" type="Node" parent="Events"]
+script = ExtResource("6_1fcw8")
+source_node = NodePath("../../HUD")
+signal_name = &"start_game"
+metadata/_custom_type_script = "uid://nrxqi5vgjem8"
 
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+
+[editable path="Player"]
+[editable path="HUD"]

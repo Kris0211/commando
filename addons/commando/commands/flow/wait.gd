@@ -5,5 +5,5 @@ class_name WaitCommand extends Command
 @export var delay: int = 1
 
 func execute(_event: GameEvent) -> void:
-	await _event.get_tree().create_timer(delay)
+	await _event.get_tree().create_timer(max(0, delay))
 	finished.emit()

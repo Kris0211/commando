@@ -6,7 +6,7 @@ const _SELETED_EVENT_TEXT := "Selected event: "
 const _CMD_WINDOW := \
 		preload("res://addons/commando/plugin/window/new_command_window/cmd_new_command_window.tscn")
 const _COND_WINDOW := \
-		preload("res://addons/commando/plugin/window/new_command_window/cmd_new_command_window.tscn")
+		preload("res://addons/commando/plugin/window/condition_group_window/cmd_condition_group_window.tscn")
 
 ## Reference to selected event [Node].
 static var event_node: GameEvent = null

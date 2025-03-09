@@ -11,14 +11,15 @@ func game_over():
 	$DeathSound.play()
 
 
-func new_game():
-	get_tree().call_group(&"mobs", &"queue_free")
-	score = 0
-	$Player.start($StartPosition.position)
-	$StartTimer.start()
-	$HUD.update_score(score)
-	$HUD.show_message("Get Ready")
-	$Music.play()
+# Moved to NewGameEvent
+#func new_game():
+	#get_tree().call_group(&"mobs", &"queue_free")#
+	#score = 0#
+	#$Player.start($StartPosition.position)#
+	#$StartTimer.start()#
+	#$HUD.update_score(score)
+	#$HUD.show_message("Get Ready")#
+	#$Music.play()#
 
 
 func _on_MobTimer_timeout():

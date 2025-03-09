@@ -6,10 +6,10 @@ enum EEventTrigger {
 	ON_READY, ## Triggers on [method Node._ready] callback.
 }
 
-const NULL_SOURCE_ERR := "GameEvent '%s' is set to ON_SIGNAL, \
+const _NULL_SOURCE_ERR := "GameEvent '%s' is set to ON_SIGNAL, \
 but no source node or signal name is defined!"
 
-const NO_SUCH_SIGNAL_WARN := "Source node has no signal named '%s'."
+const _NO_SUCH_SIGNAL_WARN := "Source node has no signal named '%s'."
 
 ## Condition for this event effects to trigger.
 @export var trigger_mode := EEventTrigger.ON_SIGNAL
@@ -49,7 +49,7 @@ func _ready() -> void:
 			execute()
 		EEventTrigger.ON_SIGNAL:
 			if source_node.is_empty() || signal_name.is_empty():
-				push_error(NULL_SOURCE_ERR % self.name)
+				push_error(_NULL_SOURCE_ERR % self.name)
 				return
 			
 			var node := get_node(source_node)
@@ -57,7 +57,7 @@ func _ready() -> void:
 				return
 				
 			if !node.has_signal(signal_name):
-				push_warning(NO_SUCH_SIGNAL_WARN % signal_name)
+				push_warning(_NO_SUCH_SIGNAL_WARN % signal_name)
 				return
 			
 			# GameEvent does not care about signal arguments,

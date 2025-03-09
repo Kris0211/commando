@@ -15,7 +15,7 @@ var _congroup: ConditionGroup
 @onready var _conditions_container := %ConditionGroupContainer as VBoxContainer
 @onready var _add_condition_button := %AddConditionButton as Button
 @onready var _ok_button := %OkButton as Button
-@onready var _cancel_button := %OkButton as Button
+@onready var _cancel_button := %CancelButton as Button
 
 
 func _ready() -> void:

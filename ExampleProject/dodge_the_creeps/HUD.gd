@@ -21,9 +21,10 @@ func update_score(score):
 	$ScoreLabel.text = str(score)
 
 
-func _on_StartButton_pressed():
-	$StartButton.hide()
-	start_game.emit()
+# Moved to ButtonPressedEvent
+#func _on_StartButton_pressed():
+	#$StartButton.hide()
+	#start_game.emit()
 
 
 func _on_MessageTimer_timeout():
