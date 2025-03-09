@@ -1,5 +1,6 @@
 extends Area2D
 
+@warning_ignore("unused_signal")
 signal hit
 
 @export var speed = 400 # How fast the player will move (pixels/sec).
@@ -47,8 +48,9 @@ func start(pos):
 	$CollisionShape2D.disabled = false
 
 
-func _on_Player_body_entered(_body):
-	hide() # Player disappears after being hit.
-	hit.emit()
+# Changed to 'PlayerBodyEnteredEvent'
+#func _on_Player_body_entered(_body):
+	#hide() # Player disappears after being hit.
+	#hit.emit()
 	# Must be deferred as we can't change physics properties on a physics callback.
-	$CollisionShape2D.set_deferred(&"disabled", true)
+	#$CollisionShape2D.set_deferred(&"disabled", true)

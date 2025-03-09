@@ -1,19 +1,5 @@
 ## Sets a Local Event Variable to a new value.
-class_name SetLocalEventVariable extends Command
-
-enum EVariableType {
-	STRING, ## Treat value as [String]
-	FLOAT, ## Treat value as [float]
-	INT, ## Treat value as [int]
-	BOOL, ## Treat value as [bool]
-}
-
-## The name of this Local Event Variable.
-@export var variable_name: String
-## Value of this Local Event Variable.
-@export var value: String = ""
-## Type of this value. Supported types are [String], [float], [int] and [bool].
-@export var type := EVariableType.STRING
+class_name SetLocalEventVariable extends SetVariableCommand
 
 
 func execute(_event: Object) -> void:
@@ -28,11 +14,11 @@ func execute(_event: Object) -> void:
 		EVariableType.FLOAT:
 			if !value.is_valid_float():
 				push_warning("Value '%s' is not a valid float." % value)
-			_event.set_local_event_variable(variable_name, float(value))
+			_change_value(variable_name, float(value), _event)
 		EVariableType.INT:
 			if !value.is_valid_int():
 				push_warning("Value '%s' is not a valid int." % value)
-			_event.set_local_event_variable(variable_name, int(value))
+			_change_value(variable_name, int(value), _event)
 		EVariableType.BOOL:
 			if value == "true":
 				_event.set_local_event_variable(variable_name, true)
@@ -44,3 +30,22 @@ func execute(_event: Object) -> void:
 			push_error("Unsupported value type!")
 	
 	finished.emit()
+
+
+func _change_value(variable_name: String, new_value: Variant,
+		_event: GameEvent) -> void:
+	if typeof(new_value) == TYPE_INT || typeof(new_value) == TYPE_FLOAT:
+		var value = _event.get_local_event_variable(variable_name)
+		match operation:
+			EOperationType.SET:
+				_event.set_local_event_variable(variable_name, value)
+				return
+			EOperationType.ADD:
+				value += new_value
+			EOperationType.SUBTRACT:
+				value -= new_value
+			EOperationType.MULTIPLY:
+				value *= new_value
+			EOperationType.DIVIDE:
+				value /= new_value
+		_event.set_local_event_variable(variable_name, value)

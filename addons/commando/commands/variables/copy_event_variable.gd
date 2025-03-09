@@ -7,11 +7,11 @@ class_name CopyEventVariableCommand extends Command
 ## The name of Local Event Variable to copy.
 @export var source_variable_name: String
 
-@export_group("Overrides", "override_")
+@export_group("Overrides")
 ## When enabled, the copied Local Event Variable will be renamed.
-@export var override_rename_variable: bool = false
+@export var rename_variable: bool = false
 ## New Local Event Variable name after copy.
-@export var override_new_variable_name: String = ""
+@export var new_variable_name: String = ""
 
 
 func execute(_event: Object) -> void:
@@ -26,8 +26,8 @@ func execute(_event: Object) -> void:
 		finished.emit()
 		return
 	
-	var new_variable_name := override_new_variable_name \
-			if override_rename_variable else source_variable_name
+	var new_variable_name := new_variable_name \
+			if rename_variable else source_variable_name
 	
 	_event.set_local_event_variable(new_variable_name, 
 			other.get_local_event_variable(source_variable_name))

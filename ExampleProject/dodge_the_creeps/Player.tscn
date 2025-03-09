@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://4vwrqjegqwpj"]
+[gd_scene load_steps=23 format=3 uid="uid://4vwrqjegqwpj"]
 
 [ext_resource type="Script" uid="uid://bsisyxx1jlypo" path="res://ExampleProject/dodge_the_creeps/Player.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://ftkxr8r4qghp" path="res://ExampleProject/dodge_the_creeps/art/playerGrey_walk1.png" id="2"]
@@ -6,6 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://b4yyoafu8bi0q" path="res://ExampleProject/dodge_the_creeps/art/playerGrey_up1.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://bko65a0nd66st" path="res://ExampleProject/dodge_the_creeps/art/playerGrey_up2.png" id="5"]
 [ext_resource type="Script" uid="uid://nrxqi5vgjem8" path="res://addons/commando/commands/game_event.gd" id="6_yt1gb"]
+[ext_resource type="Script" uid="uid://cdhv2rc7v2g18" path="res://addons/commando/commands/command.gd" id="7_ej0f1"]
+[ext_resource type="Script" uid="uid://cq10x40pjhqpl" path="res://addons/commando/commands/node/toggle_visibility_2d.gd" id="8_1hqvm"]
+[ext_resource type="Script" uid="uid://c21eqqmq34iha" path="res://addons/commando/commands/node/emit_signal.gd" id="9_7u223"]
+[ext_resource type="Script" uid="uid://cgua0w41kmkfr" path="res://addons/commando/commands/physics/toggle_collision_2d.gd" id="10_lefeu"]
+[ext_resource type="Script" uid="uid://d25u12ul1xyw8" path="res://addons/commando/commands/sound/play_sound.gd" id="11_7u223"]
 
 [sub_resource type="SpriteFrames" id="1"]
 animations = [{
@@ -54,6 +59,24 @@ gravity = Vector3(0, 0, 0)
 scale_curve = SubResource("6")
 color_ramp = SubResource("4")
 
+[sub_resource type="Resource" id="Resource_wolua"]
+script = ExtResource("8_1hqvm")
+node = NodePath("..")
+visible = false
+
+[sub_resource type="Resource" id="Resource_auqnc"]
+script = ExtResource("9_7u223")
+source_node = NodePath("..")
+signal_name = "hit"
+
+[sub_resource type="Resource" id="Resource_s0vor"]
+script = ExtResource("10_lefeu")
+collider = NodePath("../CollisionShape2D")
+collision_enabled = false
+
+[sub_resource type="Resource" id="Resource_lefeu"]
+script = ExtResource("11_7u223")
+
 [node name="Player" type="Area2D"]
 z_index = 10
 script = ExtResource("1")
@@ -73,8 +96,9 @@ texture = ExtResource("2")
 speed_scale = 2.0
 process_material = SubResource("7")
 
-[node name="GameEvent" type="Node" parent="."]
+[node name="PlayerBodyEnteredEvent" type="Node" parent="."]
 script = ExtResource("6_yt1gb")
+source_node = NodePath("..")
+signal_name = &"body_entered"
+event_commands = Array[ExtResource("7_ej0f1")]([SubResource("Resource_wolua"), SubResource("Resource_auqnc"), SubResource("Resource_s0vor"), SubResource("Resource_lefeu")])
 metadata/_custom_type_script = "uid://nrxqi5vgjem8"
-
-[connection signal="body_entered" from="." to="." method="_on_Player_body_entered"]

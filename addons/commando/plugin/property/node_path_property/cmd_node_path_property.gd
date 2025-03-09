@@ -20,10 +20,14 @@ func set_property_value(p_node_path: NodePath) -> void:
 	
 	var _root_node = EditorInterface.get_edited_scene_root()
 	var resolved_path: NodePath
-	if _root_node.has_node(p_node_path):
+	
+	if p_node_path == ^"." || p_node_path == ^"..":
+		resolved_path = ^".."
+	elif _root_node.has_node(p_node_path):
 		resolved_path = _root_node.get_node(p_node_path).get_path()
 	else:
 		resolved_path = p_node_path
+	
 	
 	var fetched_node := EditorCmdEventDock.event_node\
 			.get_node_or_null(resolved_path)
