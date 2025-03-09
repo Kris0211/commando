@@ -1,5 +1,5 @@
 ## Sets a Local Event Variable to a new value.
-class_name SetLocalEventVariable extends SetVariableCommand
+class_name SetLocalEventVariableCommand extends SetVariableCommand
 
 
 func execute(_event: Object) -> void:
@@ -41,11 +41,16 @@ func _change_value(variable_name: String, new_value: Variant,
 				_event.set_local_event_variable(variable_name, value)
 				return
 			EOperationType.ADD:
-				value += new_value
+				if value != null:
+					value += new_value
 			EOperationType.SUBTRACT:
-				value -= new_value
+				if value != null:
+					value -= new_value
 			EOperationType.MULTIPLY:
-				value *= new_value
+				if value != null:
+					value *= new_value
 			EOperationType.DIVIDE:
-				value /= new_value
-		_event.set_local_event_variable(variable_name, value)
+				if value != null:
+					value /= new_value
+		if value != null:
+			_event.set_local_event_variable(variable_name, value)

@@ -30,7 +30,7 @@ const _NO_SUCH_SIGNAL_WARN := "Source node has no signal named '%s'."
 @export_group("")
 
 ## An [Array] containing associated [Command]s.
-@export var event_commands: Array[Command]
+@export var event_commands: Array[Command] = []
 
 ## Should this [GameEvent] keep processing associated [Command]s?
 var process_commands := true

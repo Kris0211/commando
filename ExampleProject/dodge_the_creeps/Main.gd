@@ -8,18 +8,18 @@ func game_over():
 	$MobTimer.stop()
 	$HUD.show_game_over()
 	$Music.stop()
-	$DeathSound.play()
+	#$DeathSound.play()
 
 
 # Moved to NewGameEvent
 #func new_game():
-	#get_tree().call_group(&"mobs", &"queue_free")#
-	#score = 0#
-	#$Player.start($StartPosition.position)#
-	#$StartTimer.start()#
+	#get_tree().call_group(&"mobs", &"queue_free")
+	#score = 0
+	#$Player.start($StartPosition.position)
+	#$StartTimer.start()
 	#$HUD.update_score(score)
-	#$HUD.show_message("Get Ready")#
-	#$Music.play()#
+	#$HUD.show_message("Get Ready")
+	#$Music.play()
 
 
 func _on_MobTimer_timeout():
@@ -49,8 +49,8 @@ func _on_MobTimer_timeout():
 
 
 func _on_ScoreTimer_timeout():
-	score += 1
-	$HUD.update_score(score)
+	Global.score += 1
+	$HUD.update_score(Global.score)
 
 
 func _on_StartTimer_timeout():

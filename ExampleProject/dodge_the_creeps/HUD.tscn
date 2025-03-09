@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://ccqoreueuxdb7"]
+[gd_scene load_steps=9 format=3 uid="uid://ccqoreueuxdb7"]
 
 [ext_resource type="Script" uid="uid://cfh0uemni1gb7" path="res://ExampleProject/dodge_the_creeps/HUD.gd" id="1_ak5qx"]
 [ext_resource type="Script" uid="uid://nrxqi5vgjem8" path="res://addons/commando/commands/game_event.gd" id="2_ny1b2"]
 [ext_resource type="Script" uid="uid://cdhv2rc7v2g18" path="res://addons/commando/commands/command.gd" id="3_74vey"]
-[ext_resource type="Script" uid="uid://cq10x40pjhqpl" path="res://addons/commando/commands/node_2d/toggle_visibility.gd" id="4_cpgo2"]
-[ext_resource type="Script" uid="uid://c21eqqmq34iha" path="res://addons/commando/commands/advanced/emit_signal.gd" id="5_5hd11"]
+[ext_resource type="Script" uid="uid://b4somc38metbg" path="res://addons/commando/commands/custom/on_start_game.gd" id="4_cpgo2"]
+[ext_resource type="Script" uid="uid://7j77xtagbu1p" path="res://addons/commando/commands/advanced/custom_command.gd" id="5_5hd11"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_fopy7"]
 action = &"start_game"
@@ -13,14 +13,9 @@ action = &"start_game"
 events = [SubResource("InputEventAction_fopy7")]
 
 [sub_resource type="Resource" id="Resource_44m3l"]
-script = ExtResource("4_cpgo2")
-node = NodePath("..")
-visible = false
-
-[sub_resource type="Resource" id="Resource_f888y"]
 script = ExtResource("5_5hd11")
-source_node = NodePath("..")
-signal_name = "start_game"
+custom_script = ExtResource("4_cpgo2")
+script/source = null
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_ak5qx")
@@ -64,11 +59,11 @@ theme_override_font_sizes/font_size = 60
 shortcut = SubResource("4")
 text = "Start"
 
-[node name="GameEvent" type="Node" parent="StartButton"]
+[node name="OnStartGame" type="Node" parent="StartButton"]
 script = ExtResource("2_ny1b2")
 source_node = NodePath("..")
 signal_name = &"pressed"
-event_commands = Array[ExtResource("3_74vey")]([SubResource("Resource_44m3l"), SubResource("Resource_f888y")])
+event_commands = Array[ExtResource("3_74vey")]([SubResource("Resource_44m3l")])
 metadata/_custom_type_script = "uid://nrxqi5vgjem8"
 
 [node name="MessageTimer" type="Timer" parent="."]

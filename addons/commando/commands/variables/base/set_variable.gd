@@ -2,9 +2,9 @@
 class_name SetVariableCommand extends Command
 
 enum EVariableType {
-	STRING, ## Treat value as [String]
-	FLOAT, ## Treat value as [float]
 	INT, ## Treat value as [int]
+	FLOAT, ## Treat value as [float]
+	STRING, ## Treat value as [String]
 	BOOL, ## Treat value as [bool]
 }
 
@@ -21,7 +21,7 @@ enum EOperationType
 @export var variable_name: String
 ## Value of this variable.
 @export var value: String = ""
-## Type of this value. Supported types are [String], [float], [int] and [bool].
+## Type of this value. Supported types are [int], [float], String] and [bool].
 @export var type := EVariableType.STRING
 ## Operation to perform on the variable. Works if value is a number 
 ## ([int] or [float])

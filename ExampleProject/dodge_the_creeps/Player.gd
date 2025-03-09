@@ -40,7 +40,7 @@ func _process(delta):
 		rotation = PI if velocity.y > 0 else 0.0
 
 
-func start(pos):
+func start(pos = Vector2(0, 0)):
 	position = pos
 	rotation = 0
 	show()
