@@ -1,5 +1,5 @@
-# Commando  
-***Commando*** is a plugin that helps designers create and manage in-game events using lightweight, visual commands. Inspired by RPG Maker Event Editor, it provides a block-based interface that facilitates designing complex behaviors - including conditions, branching, loops, global/local variables, and more. Use the built-in commands or extend the system by creating custom commands with GDScript.
+# Commando
+***Commando*** is a plugin that helps designers create and manage in-game events using lightweight, visual commands. Inspired by RPG Maker Event Editor, it provides a block-based interface that facilitates designing complex behaviors - including conditions, branching, loops, global/local variables, and more. Use the built-in commands provided by the addon or extend the system by creating your own commands with GDScript.
 ## Features
 - **Block-based event system** - Designers can create event logic using the visual editor - without having to write a single line of code.
 - **Extendable for programmers** - Add your own, reusable commands or define new behavior in GDScript using *Custom Commands* where needed.
@@ -57,6 +57,7 @@ func execute(_event: GameEvent) -> void:
 
 ## License 
 This project is licensed under the **MIT License**.
+Example project "Dodge The Creeps" distributed under the terms of the MIT license and is available [here](https://github.com/godotengine/godot-demo-projects/tree/master/2d/dodge_the_creeps).
 
 ## Contributing
 Contributions are welcome! If you find a bug, need a feature, or want to improve the plugin, submit an issue or open a pull request.
