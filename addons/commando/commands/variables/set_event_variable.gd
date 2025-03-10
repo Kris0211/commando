@@ -2,9 +2,9 @@
 class_name SetLocalEventVariableCommand extends SetVariableCommand
 
 
-func execute(_event: Object) -> void:
+func execute(_event: GameEvent) -> void:
 	if variable_name.is_empty():
-		push_error("Variable name cannot be empty.")
+		push_error("%s: Variable name cannot be empty." % _event.name)
 		finished.emit()
 		return
 	
@@ -26,6 +26,22 @@ func execute(_event: Object) -> void:
 				_event.set_local_event_variable(variable_name, false)
 			else:
 				push_warning("Value '%s' is not a valid bool." % value)
+		EVariableType.EXPRESSION:
+			var err := _expression.parse(value)
+			if err != OK:
+				push_error("%s: Failed to parse expression %s: %s" %\
+						[_event.name, value, _expression.get_error_text()])
+				finished.emit()
+				return
+			
+			var new_value = _expression.execute()
+			if _expression.has_execute_failed():
+				push_error("%s: Failed to execute expression: %s" %\
+						[_event.name, _expression.get_error_text()])
+				finished.emit()
+				return
+			
+			_change_value(variable_name, new_value, _event)
 		_:
 			push_error("Unsupported value type!")
 	

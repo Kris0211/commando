@@ -333,7 +333,8 @@ func _prompt_delete_widgets() -> void:
 	_confirmation.confirmed.connect(_delete_commands)
 
 
-func _delete_widget_no_prompt(p_widget: EditorCmdCommandWidget) -> void:
+func _delete_widget_no_prompt(p_widget: EditorCmdCommandWidget, 
+		container: Control = null) -> void:
 	if !_selected_widgets.has(p_widget):
 		_selected_widgets.append(p_widget)
 	_delete_commands()

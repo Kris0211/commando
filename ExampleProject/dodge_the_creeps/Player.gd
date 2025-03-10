@@ -39,15 +39,15 @@ func _process(delta):
 		$AnimatedSprite2D.animation = &"up"
 		rotation = PI if velocity.y > 0 else 0.0
 
+# Changed to StartEvent
+#func start():
+	#position = pos # Now initialized by StartGameEvent!
+	#rotation = 0
+	#show()
+	#$CollisionShape2D.disabled = false
 
-func start(pos = Vector2(0, 0)):
-	position = pos
-	rotation = 0
-	show()
-	$CollisionShape2D.disabled = false
 
-
-# Changed to 'PlayerBodyEnteredEvent'
+# Changed to PlayerBodyEnteredEvent
 #func _on_Player_body_entered(_body):
 	#hide() # Player disappears after being hit.
 	#hit.emit()

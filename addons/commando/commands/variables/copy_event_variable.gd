@@ -14,9 +14,9 @@ class_name CopyEventVariableCommand extends Command
 @export var new_variable_name: String = ""
 
 
-func execute(_event: Object) -> void:
+func execute(_event: GameEvent) -> void:
 	if source_variable_name.is_empty():
-		push_error("Variable name cannot be empty.")
+		push_error("%s: Variable name cannot be empty." % _event.name)
 		finished.emit()
 		return
 	

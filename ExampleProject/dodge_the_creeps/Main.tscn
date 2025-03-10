@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cyfwty2q3rdse"]
+[gd_scene load_steps=31 format=3 uid="uid://cyfwty2q3rdse"]
 
 [ext_resource type="Script" uid="uid://bhuekadk6b7ey" path="res://ExampleProject/dodge_the_creeps/Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://rkdnhqgf2hpj" path="res://ExampleProject/dodge_the_creeps/Mob.tscn" id="2"]
@@ -11,9 +11,9 @@
 [ext_resource type="Script" uid="uid://dpvvxnflomnx7" path="res://addons/commando/commands/node_2d/copy_position.gd" id="10_mximh"]
 [ext_resource type="Script" uid="uid://bybuxuyff422g" path="res://addons/commando/commands/advanced/invoke_method.gd" id="11_c1rru"]
 [ext_resource type="Script" uid="uid://n1yrwm06bkk5" path="res://addons/commando/commands/gui/set_label_text.gd" id="12_e7cob"]
-[ext_resource type="AudioStream" uid="uid://q2pf4fr8d0ks" path="res://ExampleProject/dodge_the_creeps/art/House In a Forest Loop.ogg" id="13_cxr5e"]
 [ext_resource type="AudioStream" uid="uid://q2pf4fr8d0ks" path="res://ExampleProject/dodge_the_creeps/art/House In a Forest Loop.ogg" id="13_mximh"]
 [ext_resource type="Script" uid="uid://caqm82ukdydai" path="res://addons/commando/commands/sound/play_music.gd" id="14_1wi6u"]
+[ext_resource type="Script" uid="uid://c21eqqmq34iha" path="res://addons/commando/commands/advanced/emit_signal.gd" id="15_cxr5e"]
 [ext_resource type="Script" uid="uid://tk3hes4pykph" path="res://addons/commando/commands/flow/wait.gd" id="16_c1rru"]
 
 [sub_resource type="Curve2D" id="1"]
@@ -31,38 +31,33 @@ method_name = "queue_free"
 script = ExtResource("9_cxr5e")
 variable_name = "score"
 value = "0"
-type = 2
+type = 0
 operation = 0
-
-[sub_resource type="Resource" id="Resource_gno58"]
-script = ExtResource("11_c1rru")
-source_node = NodePath("../../Player")
-method_name = "start"
 
 [sub_resource type="Resource" id="Resource_m12lw"]
 script = ExtResource("10_mximh")
-from_node = NodePath("../../StartPosition")
-to_node = NodePath("../../Player")
+from_node = NodePath("../StartPosition")
+to_node = NodePath("../Player")
 
 [sub_resource type="Resource" id="Resource_mximh"]
 script = ExtResource("11_c1rru")
-source_node = NodePath("../../StartTimer")
+source_node = NodePath("../StartTimer")
 method_name = "start"
 
 [sub_resource type="Resource" id="Resource_2c4hu"]
 script = ExtResource("12_e7cob")
-label = NodePath("../../HUD/ScoreLabel")
+label = NodePath("../HUD/ScoreLabel")
 text = "0"
 
 [sub_resource type="Resource" id="Resource_kvbqq"]
 script = ExtResource("12_e7cob")
-label = NodePath("../../HUD/MessageLabel")
+label = NodePath("../HUD/MessageLabel")
 text = "Get Ready"
 
 [sub_resource type="Resource" id="Resource_3g5go"]
 script = ExtResource("14_1wi6u")
-music_file = ExtResource("13_cxr5e")
-audio_player = NodePath("../../Music")
+music_file = ExtResource("13_mximh")
+audio_player = NodePath("../Music")
 
 [sub_resource type="Resource" id="Resource_e7cob"]
 script = ExtResource("16_c1rru")
@@ -70,8 +65,33 @@ delay = 1
 
 [sub_resource type="Resource" id="Resource_k4btx"]
 script = ExtResource("12_e7cob")
-label = NodePath("../../HUD/MessageLabel")
+label = NodePath("../HUD/MessageLabel")
 text = ""
+
+[sub_resource type="Resource" id="Resource_yl8jt"]
+script = ExtResource("11_c1rru")
+source_node = NodePath("../ScoreTimer")
+method_name = "stop"
+
+[sub_resource type="Resource" id="Resource_cxr5e"]
+script = ExtResource("11_c1rru")
+source_node = NodePath("../MobTimer")
+method_name = "stop"
+
+[sub_resource type="Resource" id="Resource_c1rru"]
+script = ExtResource("11_c1rru")
+source_node = NodePath("../HUD")
+method_name = "show_game_over"
+
+[sub_resource type="Resource" id="Resource_1wi6u"]
+script = ExtResource("11_c1rru")
+source_node = NodePath("../Music")
+method_name = "stop"
+
+[sub_resource type="Resource" id="Resource_e6o8k"]
+script = ExtResource("15_cxr5e")
+source_node = NodePath("..")
+signal_name = "game_over"
 
 [node name="Node" type="Node"]
 script = ExtResource("1")
@@ -86,6 +106,10 @@ grow_vertical = 2
 color = Color(0.219608, 0.372549, 0.380392, 1)
 
 [node name="Player" parent="." instance=ExtResource("3")]
+
+[node name="StartEvent" parent="Player" index="3"]
+source_node = NodePath("../../HUD")
+signal_name = &"start_game"
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -106,19 +130,27 @@ curve = SubResource("1")
 
 [node name="HUD" parent="." instance=ExtResource("4")]
 
+[node name="GameOverEvent" parent="HUD" index="4"]
+source_node = NodePath("../..")
+signal_name = &"game_over"
+
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_mximh")
 
-[node name="Events" type="Node" parent="."]
-
-[node name="NewGameEvent" type="Node" parent="Events"]
+[node name="NewGameEvent" type="Node" parent="."]
 script = ExtResource("6_1fcw8")
-source_node = NodePath("../../HUD")
+source_node = NodePath("../HUD")
 signal_name = &"start_game"
-event_commands = Array[ExtResource("7_xhpti")]([SubResource("Resource_3l6nf"), SubResource("Resource_61s5o"), SubResource("Resource_gno58"), SubResource("Resource_m12lw"), SubResource("Resource_mximh"), SubResource("Resource_2c4hu"), SubResource("Resource_kvbqq"), SubResource("Resource_3g5go"), SubResource("Resource_e7cob"), SubResource("Resource_k4btx")])
+event_commands = Array[ExtResource("7_xhpti")]([SubResource("Resource_3l6nf"), SubResource("Resource_61s5o"), SubResource("Resource_m12lw"), SubResource("Resource_mximh"), SubResource("Resource_2c4hu"), SubResource("Resource_kvbqq"), SubResource("Resource_3g5go"), SubResource("Resource_e7cob"), SubResource("Resource_k4btx")])
 metadata/_custom_type_script = "uid://nrxqi5vgjem8"
 
-[connection signal="hit" from="Player" to="." method="game_over"]
+[node name="GameOverEvent" type="Node" parent="."]
+script = ExtResource("6_1fcw8")
+source_node = NodePath("../Player")
+signal_name = &"hit"
+event_commands = Array[ExtResource("7_xhpti")]([SubResource("Resource_yl8jt"), SubResource("Resource_cxr5e"), SubResource("Resource_c1rru"), SubResource("Resource_1wi6u"), SubResource("Resource_e6o8k")])
+metadata/_custom_type_script = "uid://nrxqi5vgjem8"
+
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]

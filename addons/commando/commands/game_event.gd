@@ -1,4 +1,5 @@
 ## Executes [Command] logic during gameplay.
+@icon("res://addons/commando/icons/command.svg")
 class_name GameEvent extends Node
 
 enum EEventTrigger {

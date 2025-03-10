@@ -1,7 +1,7 @@
 class_name SetLabelText extends Command
 
 @export_node_path("Label") var label: NodePath
-@export var text: String = ""
+@export_multiline var text: String = ""
 
 func execute(_event: GameEvent) -> void:
 	var _label := _event.get_node(label) as Label

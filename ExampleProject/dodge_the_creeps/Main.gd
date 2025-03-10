@@ -1,17 +1,21 @@
 extends Node
 
+@warning_ignore("unused_signal")
+signal game_over # Use signal over call to notify GameEvents!
+
 @export var mob_scene: PackedScene
-var score
+#var score # Moved to Global.score
 
-func game_over():
-	$ScoreTimer.stop()
-	$MobTimer.stop()
-	$HUD.show_game_over()
-	$Music.stop()
-	#$DeathSound.play()
+# Changed to GameOverEvent
+#func game_over():
+	#$ScoreTimer.stop()
+	#$MobTimer.stop()
+	#$HUD.show_game_over()
+	#$Music.stop()
+	#$DeathSound.play() # Moved to player scene
 
 
-# Moved to NewGameEvent
+# Changed to NewGameEvent
 #func new_game():
 	#get_tree().call_group(&"mobs", &"queue_free")
 	#score = 0
@@ -22,6 +26,7 @@ func game_over():
 	#$Music.play()
 
 
+# Currently cannot be represented as GameEvent due to modifying new instance.
 func _on_MobTimer_timeout():
 	# Create a new instance of the Mob scene.
 	var mob = mob_scene.instantiate()
@@ -48,11 +53,13 @@ func _on_MobTimer_timeout():
 	add_child(mob)
 
 
+# Currently cannot be represented as GameEven due to args in method call.
 func _on_ScoreTimer_timeout():
 	Global.score += 1
 	$HUD.update_score(Global.score)
 
 
+# Can be represented as GameEvent but is simple enough to leave it here.
 func _on_StartTimer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()

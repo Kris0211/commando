@@ -1,10 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://ccqoreueuxdb7"]
+[gd_scene load_steps=20 format=3 uid="uid://ccqoreueuxdb7"]
 
 [ext_resource type="Script" uid="uid://cfh0uemni1gb7" path="res://ExampleProject/dodge_the_creeps/HUD.gd" id="1_ak5qx"]
 [ext_resource type="Script" uid="uid://nrxqi5vgjem8" path="res://addons/commando/commands/game_event.gd" id="2_ny1b2"]
 [ext_resource type="Script" uid="uid://cdhv2rc7v2g18" path="res://addons/commando/commands/command.gd" id="3_74vey"]
 [ext_resource type="Script" uid="uid://b4somc38metbg" path="res://addons/commando/commands/custom/on_start_game.gd" id="4_cpgo2"]
 [ext_resource type="Script" uid="uid://7j77xtagbu1p" path="res://addons/commando/commands/advanced/custom_command.gd" id="5_5hd11"]
+[ext_resource type="Script" uid="uid://bybuxuyff422g" path="res://addons/commando/commands/advanced/invoke_method.gd" id="6_5hd11"]
+[ext_resource type="Script" uid="uid://df7lc4xxbcuo6" path="res://addons/commando/commands/flow/wait_for_signal.gd" id="7_ih1sv"]
+[ext_resource type="Script" uid="uid://n1yrwm06bkk5" path="res://addons/commando/commands/gui/set_label_text.gd" id="8_vww28"]
+[ext_resource type="Script" uid="uid://cfgreeaifh1wq" path="res://addons/commando/commands/gui/toggle_control_visibility.gd" id="9_ih1sv"]
+[ext_resource type="Script" uid="uid://tk3hes4pykph" path="res://addons/commando/commands/flow/wait.gd" id="10_s470m"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_fopy7"]
 action = &"start_game"
@@ -15,7 +20,36 @@ events = [SubResource("InputEventAction_fopy7")]
 [sub_resource type="Resource" id="Resource_44m3l"]
 script = ExtResource("5_5hd11")
 custom_script = ExtResource("4_cpgo2")
-script/source = null
+
+[sub_resource type="Resource" id="Resource_f888y"]
+script = ExtResource("6_5hd11")
+source_node = NodePath("..")
+method_name = "show_message"
+
+[sub_resource type="Resource" id="Resource_1q1qg"]
+script = ExtResource("7_ih1sv")
+source_node = NodePath("../MessageTimer")
+signal_name = "timeout"
+
+[sub_resource type="Resource" id="Resource_y2w0k"]
+script = ExtResource("8_vww28")
+label = NodePath("../MessageLabel")
+text = "Dodge the
+Creeps"
+
+[sub_resource type="Resource" id="Resource_vww28"]
+script = ExtResource("9_ih1sv")
+node = NodePath("../MessageLabel")
+visible = true
+
+[sub_resource type="Resource" id="Resource_qi2gk"]
+script = ExtResource("10_s470m")
+delay = 1
+
+[sub_resource type="Resource" id="Resource_4w5uh"]
+script = ExtResource("9_ih1sv")
+node = NodePath("../StartButton")
+visible = true
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_ak5qx")
@@ -59,7 +93,7 @@ theme_override_font_sizes/font_size = 60
 shortcut = SubResource("4")
 text = "Start"
 
-[node name="OnStartGame" type="Node" parent="StartButton"]
+[node name="ButtonPressedEvent" type="Node" parent="StartButton"]
 script = ExtResource("2_ny1b2")
 source_node = NodePath("..")
 signal_name = &"pressed"
@@ -68,5 +102,10 @@ metadata/_custom_type_script = "uid://nrxqi5vgjem8"
 
 [node name="MessageTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="GameOverEvent" type="Node" parent="."]
+script = ExtResource("2_ny1b2")
+event_commands = Array[ExtResource("3_74vey")]([SubResource("Resource_f888y"), SubResource("Resource_1q1qg"), SubResource("Resource_y2w0k"), SubResource("Resource_vww28"), SubResource("Resource_qi2gk"), SubResource("Resource_4w5uh")])
+metadata/_custom_type_script = "uid://nrxqi5vgjem8"
 
 [connection signal="timeout" from="MessageTimer" to="." method="_on_MessageTimer_timeout"]
