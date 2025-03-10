@@ -38,6 +38,7 @@ Programmers can define new commands in GDScript that designers can later use wit
 
 ### Using "Custom Command"
 If a one-time behavior is needed, designers can use the **"Custom Command"** widget. This works exactly as if you were to create a new command, but it does not clutter the "Add New Command" window. Simply select a script or create a new one!
+
 *Currently Custom Commands do not expose their exported properties to Commando, unlike regular Commands.*
 
 **Example Custom Command:**
@@ -57,7 +58,8 @@ func execute(_event: GameEvent) -> void:
 
 ## License 
 This project is licensed under the **MIT License**.
+
 Example project "Dodge The Creeps" distributed under the terms of the MIT license and is available [here](https://github.com/godotengine/godot-demo-projects/tree/master/2d/dodge_the_creeps).
 
 ## Contributing
-Contributions are welcome! If you find a bug, need a feature, or want to improve the plugin, submit an issue or open a pull request.
+Contributions are welcome! If you find a bug, need a feature, or want to improve the plugin, [submit an issue](https://github.com/Kris0211/commando/issues) or [open a pull request](https://github.com/Kris0211/commando/pulls).
