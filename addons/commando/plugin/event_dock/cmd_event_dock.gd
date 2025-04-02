@@ -60,7 +60,7 @@ func _input(event: InputEvent) -> void:
 	var key_event := event as InputEventKey
 	if key_event == null:
 		return
-
+	
 	if key_event.pressed && !key_event.is_echo() && \
 			!_selected_widgets.is_empty():
 		if key_event.is_ctrl_pressed():
@@ -415,7 +415,14 @@ func _on_add_command_button_pressed() -> void:
 
 
 func _on_command_added(p_command: Command) -> void:
-	event_node.event_commands.append(p_command)
+	if !event_node.event_commands.is_read_only():
+		event_node.event_commands.append(p_command)
+	else:
+		# Force mutable array and refresh editor to update cache
+		selection.clear()
+		event_node.event_commands = [p_command]
+		EditorInterface.edit_node(event_node) 
+	
 	_widget_container.add_command_widget(p_command, self)
 	_destroy_window()
 
