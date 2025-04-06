@@ -421,7 +421,7 @@ func _on_command_added(p_command: Command) -> void:
 		# Force mutable array and refresh editor to update cache
 		selection.clear()
 		event_node.event_commands = [p_command]
-		EditorInterface.edit_node(event_node) 
+		EditorInterface.edit_node(event_node)
 	
 	_widget_container.add_command_widget(p_command, self)
 	_destroy_window()
