@@ -21,20 +21,6 @@ enum EContextMenuOptions {
 	DELETE ## Delete operation
 }
 
-## These properties will be excluded from command widgets.
-const EXCLUDED_PROPERTIES := [
-	"resource_local_to_scene", 
-	"resource_path",
-	"resource_name",
-	"resource_scene_unique_id",
-	"script",
-	"custom_script",
-	"condition",
-	"effects_if_true",
-	"effects_if_false",
-	"commands",
-]
-
 
 ## Is this widget currently selected?
 var selected: bool = false
@@ -88,13 +74,9 @@ func setup(p_command: Command, p_dock: Control, p_container: Container) -> void:
 	_set_widget_color(_widget_color)
 	
 	# Create properties
-	var i := 0
 	for cproperty: Dictionary in p_command.get_property_list():
-		if !_is_property_exported(cproperty):
-			continue
-		
-		add_property(cproperty, p_command.get(cproperty.get("name")))
-		i += 1
+		if EditorCmdEventProperties.is_property_exported(cproperty):
+			add_property(cproperty, p_command.get(cproperty.get("name")))
 	
 	# Connect selection signal
 	_top_panel.clicked_on.connect(_on_selected)
@@ -207,14 +189,6 @@ func _get_command_icon(p_command_name: String) -> Texture2D:
 	if ResourceLoader.exists(icon_path):
 		return load(icon_path)
 	return load(Cmd.Config.default_command_icon)
-
-
-func _is_property_exported(p_property: Dictionary) -> bool:
-	var property_name = p_property.get("name")
-	if p_property.get("usage") & PROPERTY_USAGE_EDITOR == 0:
-		return false
-	
-	return !(property_name in EXCLUDED_PROPERTIES)
 #endregion
 
 

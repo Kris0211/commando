@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://6wwtq1os8jtv"]
+[gd_scene load_steps=6 format=3 uid="uid://6wwtq1os8jtv"]
 
 [ext_resource type="Script" uid="uid://dcogu2vg71av6" path="res://addons/commando/plugin/event_dock/cmd_event_dock.gd" id="1_o3p30"]
 [ext_resource type="Script" uid="uid://bl7u2j6sc0ivp" path="res://addons/commando/plugin/ui/cmd_widget_container.gd" id="2_p88eb"]
+[ext_resource type="PackedScene" uid="uid://cbipcxsx5kluf" path="res://addons/commando/plugin/event_dock/cmd_event_properties.tscn" id="5_tqlnb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hlfvy"]
+bg_color = Color(0.211765, 0.239216, 0.290196, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvf0o"]
 bg_color = Color(0.129412, 0.14902, 0.180392, 1)
@@ -47,20 +51,48 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
-text = "Selected event: TestEvent"
+text = "Selected event: GameEvent"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hlfvy")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="EventButton" type="Button" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+text = "Event"
+
+[node name="CommandsButton" type="Button" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Commands"
+
+[node name="Event" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer" instance=ExtResource("5_tqlnb")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Commands" type="PanelContainer" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_rvf0o")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/Commands"]
 layout_mode = 2
 
-[node name="WidgetContainer" type="VBoxContainer" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/PanelContainer/ScrollContainer"]
+[node name="WidgetContainer" type="VBoxContainer" parent="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/Commands/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -72,7 +104,10 @@ script = ExtResource("2_p88eb")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 40)
 layout_mode = 2
+size_flags_vertical = 8
 text = "Add New Command"
 
 [connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="pressed" from="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/EventButton" to="." method="_on_event_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/CommandsButton" to="." method="_on_commands_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/EditPanel/MarginContainer/VBoxContainer/AddCommandButton" to="." method="_on_add_command_button_pressed"]

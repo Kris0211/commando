@@ -29,6 +29,10 @@ var _clipboard_source: GameEvent = null
 
 
 @onready var _prompt_label := %PromptLabel as Label
+@onready var _event_button := %EventButton as Button
+@onready var _commands_button := %CommandsButton as Button
+@onready var _event_panel := %Event as EditorCmdEventProperties
+@onready var _commands_panel := %Commands as PanelContainer
 @onready var _edit_panel := %EditPanel as PanelContainer
 @onready var _selected_event_label := %EventLabel as Label
 @onready var _widget_container := %WidgetContainer as EditorCmdWidgetContainer
@@ -116,6 +120,8 @@ func _toggle_editor(p_enabled: bool = true) -> void:
 		_edit_panel.visible = p_enabled
 	if _prompt_label != null:
 		_prompt_label.visible = !p_enabled
+	if p_enabled:
+		_event_panel.setup(event_node)
 #endregion
 
 #region COMMANDS
@@ -435,3 +441,17 @@ func _destroy_window(p_widget: EditorCmdCommandWidget = null) -> void:
 	_window.free.call_deferred()
 	_window = null
 #endregion
+
+
+func _on_event_button_pressed() -> void:
+	_commands_button.set_pressed(false)
+	_commands_panel.hide()
+	_add_command_button.hide()
+	_event_panel.show()
+
+
+func _on_commands_button_pressed() -> void:
+	_event_button.set_pressed(false)
+	_event_panel.hide()
+	_commands_panel.show()
+	_add_command_button.show()
