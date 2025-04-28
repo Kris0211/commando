@@ -3,6 +3,7 @@
 class_name GameEvent extends Node
 
 enum EEventTrigger {
+	MANUAL, ## GameEvent needs to be triggered via code.
 	ON_SIGNAL, ## Triggers when this event receives a signal from selected node.
 	ON_READY, ## Triggers on [method Node._ready] callback.
 }
@@ -46,6 +47,8 @@ var _already_triggered: bool = false
 func _ready() -> void:
 	add_to_group(&"events")
 	match trigger_mode:
+		EEventTrigger.MANUAL:
+			pass # Do nothing; must be executed manually
 		EEventTrigger.ON_READY:
 			execute()
 		EEventTrigger.ON_SIGNAL:
@@ -99,7 +102,6 @@ func get_local_event_variable(lev_name: String) -> Variant:
 
 
 #region PERSISTENCE
-
 ## Serializes this [GameEvent]. 
 ## Use this method to save the state of this Event for use in save system.
 func serialize() -> Dictionary:
@@ -113,7 +115,6 @@ func serialize() -> Dictionary:
 func restore(data: Dictionary) -> void:
 	if !data.is_empty():
 		_local_event_variables = data.get("local_event_variables", {})
-
 #endregion
 
 
