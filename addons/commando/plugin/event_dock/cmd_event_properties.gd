@@ -69,3 +69,23 @@ func _on_property_changed(p_property_name: String,
 		p_property_value: Variant) -> void:
 	EditorCmdEventDock.event_node.set(
 		p_property_name.to_snake_case(), p_property_value)
+	if p_property_name.to_snake_case() == "trigger_mode":
+		_update_property_visibility()
+
+
+func _update_property_visibility() -> void:
+	for c in _event_properties.get_children():
+		var property := c as EditorCmdCommandProperty
+		if property == null:
+			print(c.name)
+			continue
+		
+		match property.get_property_name().to_snake_case():
+			"signal_name", "source_node":
+				# Use set_deferred() to wait for underlying event to update
+				property.set_deferred(&"visible", \
+						EditorCmdEventDock.event_node.trigger_mode == \
+						GameEvent.EEventTrigger.ON_SIGNAL
+				)
+			_:
+				property.set_deferred(&"visible", true)
