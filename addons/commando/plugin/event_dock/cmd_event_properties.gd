@@ -37,6 +37,8 @@ func setup(p_event: GameEvent) -> void:
 	for cproperty: Dictionary in p_event.get_property_list():
 		if is_property_exported(cproperty):
 			add_property(cproperty, p_event.get(cproperty.get("name")))
+	
+	_update_property_visibility()
 
 
 ## Adds a property to event dock.

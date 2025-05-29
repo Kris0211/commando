@@ -3,7 +3,7 @@
 extends EditorCmdCommandProperty
 
 func _ready() -> void:
-	property_editor = $CheckBox as CheckBox
+	property_editor = $PanelContainer/HBoxContainer/CheckBox as CheckBox
 	property_editor.toggled.connect(
 		func(toggled_on: bool) -> void:
 			property_changed.emit(_label.get_text(), toggled_on)

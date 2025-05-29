@@ -30,6 +30,10 @@ static var multiline_property: PackedScene \
 static var string_property: PackedScene \
 	= preload("res://addons/commando/plugin/property/string_property/cmd_string_property.tscn")
 
+## Color property editor scene.
+static var color_property: PackedScene \
+	= preload("res://addons/commando/plugin/property/color_property/cmd_color_property.tscn")
+
 
 ## Creates a widget property based on [Dictionary] with property data.
 static func create_property(p_property: Dictionary) -> EditorCmdCommandProperty:
@@ -75,5 +79,11 @@ static func create_property(p_property: Dictionary) -> EditorCmdCommandProperty:
 			if property_hint == PROPERTY_HINT_NODE_PATH_VALID_TYPES:
 				property_instance.set_allowed_types(
 						property_hint_string.split(","))
+		
+		# Color
+		TYPE_COLOR:
+			property_instance = color_property.instantiate()
+			property_instance.toggle_alpha(
+					property_hint != PROPERTY_HINT_COLOR_NO_ALPHA)
 	
 	return property_instance
