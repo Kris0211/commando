@@ -85,13 +85,19 @@ func _add_signal_selector(source_node: Node, signal_name: StringName) -> void:
 
 func _update_property_visibility() -> void:
 	for c in _event_properties.get_children():
+		if c is CmdSignalSelector:
+			# Use set_deferred() to wait for underlying event to update
+			c.set_deferred(&"visible", \
+						EditorCmdEventDock.event_node.trigger_mode == \
+						GameEvent.EEventTrigger.ON_SIGNAL
+				)
+		
 		var property := c as EditorCmdCommandProperty
 		if property == null:
 			continue
 		
 		match property.get_property_name().to_snake_case():
-			"signal_name", "source_node":
-				# Use set_deferred() to wait for underlying event to update
+			"source_node":
 				property.set_deferred(&"visible", \
 						EditorCmdEventDock.event_node.trigger_mode == \
 						GameEvent.EEventTrigger.ON_SIGNAL
