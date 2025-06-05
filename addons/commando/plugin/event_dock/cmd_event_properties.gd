@@ -1,4 +1,5 @@
 @tool
+## A dock area for event properties.
 class_name EditorCmdEventProperties extends PanelContainer
 
 ## These properties will be excluded from command widgets & event properties.
@@ -23,6 +24,8 @@ const EXCLUDED_PROPERTIES := [
 	"editor_description",
 	"metadata/_custom_type_script",
 ]
+const _SIGNAL_SELECTOR_SCENE := \
+		preload("res://addons/commando/plugin/event_dock/signal_selector/cmd_signal_selector.tscn")
 
 @onready var _event_properties := %EventProperties as VBoxContainer
 
@@ -35,6 +38,12 @@ func setup(p_event: GameEvent) -> void:
 	
 	# Create properties
 	for cproperty: Dictionary in p_event.get_property_list():
+		if cproperty.get("name") == "signal_name":
+			_add_signal_selector(
+				p_event.get_node(p_event.source_node),
+				p_event.signal_name)
+			continue
+		
 		if is_property_exported(cproperty):
 			add_property(cproperty, p_event.get(cproperty.get("name")))
 	
@@ -67,12 +76,11 @@ static func is_property_exported(p_property: Dictionary) -> bool:
 	return !(property_name in EXCLUDED_PROPERTIES)
 
 
-func _on_property_changed(p_property_name: String, 
-		p_property_value: Variant) -> void:
-	EditorCmdEventDock.event_node.set(
-		p_property_name.to_snake_case(), p_property_value)
-	if p_property_name.to_snake_case() == "trigger_mode":
-		_update_property_visibility()
+func _add_signal_selector(source_node: Node, signal_name: StringName) -> void:
+	var _signal_selector := _SIGNAL_SELECTOR_SCENE.instantiate()
+	_event_properties.add_child(_signal_selector)
+	_signal_selector.setup(source_node.get_signal_list(), signal_name)
+	_signal_selector.selection_changed.connect(_on_property_changed)
 
 
 func _update_property_visibility() -> void:
@@ -95,3 +103,11 @@ func _update_property_visibility() -> void:
 				)
 			_:
 				property.set_deferred(&"visible", true)
+
+
+func _on_property_changed(p_property_name: String, 
+		p_property_value: Variant) -> void:
+	EditorCmdEventDock.event_node.set(
+		p_property_name.to_snake_case(), p_property_value)
+	if p_property_name.to_snake_case() == "trigger_mode":
+		_update_property_visibility()

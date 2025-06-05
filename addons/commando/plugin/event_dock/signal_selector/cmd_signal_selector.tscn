@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://vps7ufcigj47"]
+
+[ext_resource type="Script" uid="uid://cdtxuxx1bymx" path="res://addons/commando/plugin/event_dock/signal_selector/cmd_signal_selector.gd" id="1_so3hm"]
+
+[node name="CmdSignalSelector" type="HBoxContainer"]
+script = ExtResource("1_so3hm")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Signal Name"
+
+[node name="OptionButton" type="OptionButton" parent="."]
+layout_mode = 2

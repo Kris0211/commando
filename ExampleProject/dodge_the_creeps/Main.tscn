@@ -111,6 +111,9 @@ color = Color(0.219608, 0.372549, 0.380392, 1)
 source_node = NodePath("../../HUD")
 signal_name = &"start_game"
 
+[node name="PlayerBodyEnteredEvent" parent="Player" index="4"]
+signal_name = "body_entered"
+
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
 
