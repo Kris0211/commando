@@ -79,7 +79,7 @@ static func is_property_exported(p_property: Dictionary) -> bool:
 func _add_signal_selector(source_node: Node, signal_name: StringName) -> void:
 	var _signal_selector := _SIGNAL_SELECTOR_SCENE.instantiate()
 	_event_properties.add_child(_signal_selector)
-	_signal_selector.setup(source_node.get_signal_list(), signal_name)
+	_signal_selector.setup(source_node, signal_name)
 	_signal_selector.selection_changed.connect(_on_property_changed)
 
 
