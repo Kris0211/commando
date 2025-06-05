@@ -3,9 +3,11 @@ class_name RandomVariableCommand extends Command
 
 enum ERandomMethod
 {
-	## Uses [method RandomNumberGenerator.randi_range] to generate a random number
+	## Uses [method RandomNumberGenerator.randi_range] 
+	## to generate a random number
 	RANDOM_INT, 
-	## Uses [method RandomNumberGenerator.randf_range] to generate a random number
+	## Uses [method RandomNumberGenerator.randf_range] 
+	## to generate a random number
 	RANDOM_FLOAT
 }
 

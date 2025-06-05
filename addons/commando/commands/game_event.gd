@@ -6,12 +6,15 @@ enum EEventTrigger {
 	MANUAL, ## GameEvent needs to be triggered via code.
 	ON_SIGNAL, ## Triggers when this event receives a signal from selected node.
 	ON_READY, ## Triggers on [method Node._ready] callback.
+	ON_TIMEOUT, ## Triggers repetadely after a set delay
+	ON_PROCESS, ## Triggers every [method Node._process] tick.
+	ON_PHYSICS_PROCESS, ## Triggers every [method Node._physics_process] tick.
 }
 
 const _NULL_SOURCE_ERR := "GameEvent '%s' is set to ON_SIGNAL, \
 but no source node or signal name is defined!"
-
 const _NO_SUCH_SIGNAL_WARN := "Source node has no signal named '%s'."
+const _ZERO_DELAY_WARN := "Trigger delay is set to 0 seconds."
 
 ## Condition for this event effects to trigger.
 @export var trigger_mode := EEventTrigger.ON_SIGNAL
@@ -29,6 +32,11 @@ const _NO_SUCH_SIGNAL_WARN := "Source node has no signal named '%s'."
 ## this [GameEvent] will trigger.
 @export var signal_name: StringName
 
+@export_group("Timer")
+
+## Timeout delay (in seconds)
+@export var trigger_delay: float = 1.0
+
 @export_group("")
 
 ## An [Array] containing associated [Command]s.
@@ -45,12 +53,21 @@ var _already_triggered: bool = false
 
 
 func _ready() -> void:
+	# Disable process callback for non-process events
+	set_process(false)
+	set_physics_process(false)
 	add_to_group(&"events")
 	match trigger_mode:
 		EEventTrigger.MANUAL:
 			pass # Do nothing; must be executed manually
 		EEventTrigger.ON_READY:
 			execute()
+		EEventTrigger.ON_TIMEOUT:
+			_start_timer()
+		EEventTrigger.ON_PROCESS:
+			set_process(true)
+		EEventTrigger.ON_PHYSICS_PROCESS:
+			set_physics_process(true)
 		EEventTrigger.ON_SIGNAL:
 			if source_node.is_empty() || signal_name.is_empty():
 				push_error(_NULL_SOURCE_ERR % self.name)
@@ -69,6 +86,16 @@ func _ready() -> void:
 			node.connect(signal_name, _on_signal_trigger)
 
 
+func _process(delta: float) -> void:
+	if trigger_mode == EEventTrigger.ON_PROCESS:
+		execute()
+
+
+func _physics_process(delta: float) -> void:
+	if trigger_mode == EEventTrigger.ON_PHYSICS_PROCESS:
+		execute()
+
+
 ## Triggers this events's [Command]s.
 func execute() -> void:
 	if one_shot && _already_triggered:
@@ -82,6 +109,18 @@ func execute() -> void:
 		
 		cmd.execute.call_deferred(self)
 		await cmd.finished
+	
+	if one_shot:
+		set_process(false)
+		set_physics_process(false)
+
+
+func _start_timer() -> void:
+	if trigger_delay == 0.0:
+		push_warning(_NO_SUCH_SIGNAL_WARN % signal_name)
+	while true:
+		await get_tree().create_timer(trigger_delay).timeout
+		execute()
 
 
 #region EVENT VARIABLES

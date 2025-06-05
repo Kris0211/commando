@@ -58,7 +58,7 @@ func add_property(p_property: Dictionary, p_value: Variant) -> void:
 
 
 ## Static utility function that checks if property is exported
-## and not excluded from use
+## and not excluded from use.
 static func is_property_exported(p_property: Dictionary) -> bool:
 	var property_name = p_property.get("name")
 	if p_property.get("usage") & PROPERTY_USAGE_EDITOR == 0:
@@ -79,7 +79,6 @@ func _update_property_visibility() -> void:
 	for c in _event_properties.get_children():
 		var property := c as EditorCmdCommandProperty
 		if property == null:
-			print(c.name)
 			continue
 		
 		match property.get_property_name().to_snake_case():
@@ -88,6 +87,11 @@ func _update_property_visibility() -> void:
 				property.set_deferred(&"visible", \
 						EditorCmdEventDock.event_node.trigger_mode == \
 						GameEvent.EEventTrigger.ON_SIGNAL
+				)
+			"trigger_delay":
+				property.set_deferred(&"visible", \
+						EditorCmdEventDock.event_node.trigger_mode == \
+						GameEvent.EEventTrigger.ON_TIMEOUT
 				)
 			_:
 				property.set_deferred(&"visible", true)

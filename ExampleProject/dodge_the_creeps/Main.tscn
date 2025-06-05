@@ -130,6 +130,9 @@ curve = SubResource("1")
 
 [node name="HUD" parent="." instance=ExtResource("4")]
 
+[node name="ButtonPressedEvent" parent="HUD/StartButton" index="0"]
+one_shot = true
+
 [node name="GameOverEvent" parent="HUD" index="4"]
 source_node = NodePath("../..")
 signal_name = &"game_over"
