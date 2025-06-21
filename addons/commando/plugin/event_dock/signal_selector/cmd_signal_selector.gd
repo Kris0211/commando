@@ -34,7 +34,6 @@ func setup(source_node: Node, current_signal: StringName) -> void:
 func _get_signals_by_depth(node: Node, max_depth: int) -> Array[StringName]:
 	var result: Array[StringName] = []
 	var seen: Dictionary = {}
-	
 	var script: Script = node.get_script()
 	if script != null:
 		for sig in script.get_script_signal_list():
@@ -58,11 +57,11 @@ func _get_signals_by_depth(node: Node, max_depth: int) -> Array[StringName]:
 		
 		# Extract signal names
 		var parent_signal_names := parent_signals.map(
-			func(sig: Dictionary): 
+			func(sig: Dictionary) -> StringName: 
 				return sig.get("name")
 		)
 		var current_only := current_signals.filter(
-			func(sig: Dictionary): 
+			func(sig: Dictionary) -> bool: 
 				return !parent_signal_names.has(sig.get("name"))
 		)
 		
