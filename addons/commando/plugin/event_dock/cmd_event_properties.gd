@@ -39,9 +39,11 @@ func setup(p_event: GameEvent) -> void:
 	# Create properties
 	for cproperty: Dictionary in p_event.get_property_list():
 		if cproperty.get("name") == "signal_name":
-			_add_signal_selector(
-				p_event.get_node(p_event.source_node),
-				p_event.signal_name)
+			var source_node := p_event.get_node_or_null(p_event.source_node)
+			if source_node:
+				_add_signal_selector(
+					source_node,
+					p_event.signal_name)
 			continue
 		
 		if is_property_exported(cproperty):
