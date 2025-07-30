@@ -3,3 +3,5 @@ extends Node
 
 # Some global game variable.
 var score: int = 0
+
+var always_true := true

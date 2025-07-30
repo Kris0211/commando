@@ -22,6 +22,7 @@ func _ready() -> void:
 	_add_condition_button.pressed.connect(_on_add_condition_button_pressed)
 	_ok_button.pressed.connect(_on_ok_button_pressed)
 	_cancel_button.pressed.connect(_on_cancel_button_pressed)
+	_conditions_container.child_order_changed.connect(_update_condata)
 
 
 ## Initializes this Condition Group Editor.
@@ -62,12 +63,6 @@ func _delete_condition(p_condition: EditorCmdConditionData) -> void:
 	var idx := p_condition.get_index()
 	_congroup.conditions.remove_at(idx)
 	p_condition.queue_free()
-	var _update_condata = \
-		func() -> void:
-			if _conditions_container.get_child_count() == 1:
-				_conditions_container.get_child(0).\
-						logical_operation_button.set_visible(false)
-	_update_condata.call_deferred()
 
 
 func _on_add_condition_button_pressed() -> void:
@@ -85,3 +80,11 @@ func _on_ok_button_pressed() -> void:
 func _on_cancel_button_pressed() -> void:
 	_congroup = null
 	close_requested.emit()
+
+
+func _update_condata():
+	return
+	# TODO: Ensure proper size
+	#if _conditions_container.get_child_count() == 1:
+	#	_conditions_container.get_child(0).\
+	#			logical_operation_button.set_visible(false)

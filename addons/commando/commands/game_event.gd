@@ -13,7 +13,7 @@ enum EEventTrigger {
 
 const _NULL_SOURCE_ERR := "GameEvent '%s' is set to ON_SIGNAL, \
 but no source node or signal name is defined!"
-const _NO_SUCH_SIGNAL_WARN := "Source node has no signal named '%s'."
+const _NO_SUCH_SIGNAL_WARN := "%s: Source node '%s' has no signal named '%s'."
 const _ZERO_DELAY_WARN := "Trigger delay is set to 0 seconds."
 
 ## Condition for this event effects to trigger.
@@ -78,7 +78,8 @@ func _ready() -> void:
 				return
 				
 			if !node.has_signal(signal_name):
-				push_warning(_NO_SUCH_SIGNAL_WARN % signal_name)
+				push_warning(_NO_SUCH_SIGNAL_WARN % \
+						[self.name, node.name, signal_name])
 				return
 			
 			# GameEvent does not care about signal arguments,
@@ -109,6 +110,7 @@ func execute() -> void:
 		
 		cmd.execute.call_deferred(self)
 		await cmd.finished
+	
 	
 	if one_shot:
 		set_process(false)

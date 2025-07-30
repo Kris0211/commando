@@ -6,7 +6,7 @@ class_name ConditionBranchCommand extends Command
 
 
 @warning_ignore("untyped_declaration")
-func execute(_event):
+func execute(_event: GameEvent):
 	if condition == null:
 		push_warning("No conditions were set, nothing to evaluate!")
 		finished.emit()

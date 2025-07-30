@@ -7,14 +7,16 @@ class_name ConditionData extends Resource
 enum ELogicalOperator
 {
 	AND, ## Boolean 'AND' (&&)
-	OR ## Boolean 'OR' (&&)
+	OR ## Boolean 'OR' (||)
 }
 
 enum EVariableType
 {
 	VALUE, ## Constant value
-	GLOBAL_VARIABLE, ## Global game variable
-	LOCAL_VARIABLE ## Local event variable
+	GLOBAL_VARIABLE, ## Global game variable name
+	LOCAL_VARIABLE, ## Local event variable name
+	BOOLEAN, ## Logical [bool] value (true/false)
+	EXPRESSION ## Interprets the text as an [Expression]
 }
 
 ## Logical operator connecting this [ConditionData] with previous one
@@ -26,7 +28,7 @@ enum EVariableType
 @export var variable_type := EVariableType.GLOBAL_VARIABLE
 
 ## Constant value (or variable identifier) to compare.
-@export var variable_name := ""
+@export var variable_name: String = ""
 
 ## Compararison operator to use when evaluating condition
 @export_enum(
@@ -41,7 +43,8 @@ enum EVariableType
 ## Type of variable to compare previous variable with.
 @export var compare_type := EVariableType.VALUE
 
-## Constant value (or variable identifier) to compare previous variable with.
+## Constant value (or variable identifier) 
+## to compare previous variable with.
 @export var compare_value: String = ""
 
 
@@ -57,10 +60,12 @@ func evaluate(_context: Object) -> bool:
 func _parse_value(_variable: String, _type: EVariableType,
 		 _event: GameEvent) -> Variant:
 	match _type:
-		EVariableType.VALUE:
+		EVariableType.VALUE, EVariableType.BOOLEAN:
 			return _parse_literal(_variable.strip_edges())
+		
 		EVariableType.GLOBAL_VARIABLE:
 			return _get_global_variable(_variable)
+		
 		EVariableType.LOCAL_VARIABLE:
 			if _event != null:
 				return _event.get_local_event_variable(_variable)
@@ -68,6 +73,10 @@ func _parse_value(_variable: String, _type: EVariableType,
 				printerr("Attempted to fetch a local event variable, \
 but no event was provided.")
 			return null
+		
+		EVariableType.EXPRESSION:
+			return _parse_expression(_variable.strip_edges())
+		
 		_:
 			printerr("Unrecognised variable type in _parse_value(): ", 
 					_variable)
@@ -88,9 +97,9 @@ func _parse_literal(literal: String) -> Variant:
 	return literal
 
 
-func _get_global_variable(value_str: String) -> Variant:
+func _parse_expression(text: String) -> Variant:
 	var expr := Expression.new()
-	var err := expr.parse(value_str, ["Global"])
+	var err := expr.parse(text, ["Global"])
 	if err != OK:
 		printerr("Parse Error: ", expr.get_error_text())
 		return null
@@ -103,11 +112,14 @@ func _get_global_variable(value_str: String) -> Variant:
 	return res
 
 
+func _get_global_variable(value_str: String) -> Variant:
+	return Global.get(value_str)
+
+
 func _evaluate_condition(left: Variant, op: int, right: Variant) -> bool:
 	if left == null || right == null:
 		printerr("Evaluation failed: Value is null.")
 		return false
-	
 	match op:
 		OP_EQUAL:
 			return left == right

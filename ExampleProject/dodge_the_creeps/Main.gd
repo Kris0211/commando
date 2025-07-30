@@ -1,7 +1,7 @@
 extends Node
 
 @warning_ignore("unused_signal")
-signal game_over # Use signal over call to notify GameEvents!
+signal game_over # Use signal over calls to notify GameEvents!
 
 @export var mob_scene: PackedScene
 #var score # Moved to Global.score
@@ -30,25 +30,25 @@ signal game_over # Use signal over call to notify GameEvents!
 func _on_MobTimer_timeout():
 	# Create a new instance of the Mob scene.
 	var mob = mob_scene.instantiate()
-
+	
 	# Choose a random location on Path2D.
 	var mob_spawn_location = get_node(^"MobPath/MobSpawnLocation")
 	mob_spawn_location.progress = randi()
-
+	
 	# Set the mob's direction perpendicular to the path direction.
 	var direction = mob_spawn_location.rotation + PI / 2
-
+	
 	# Set the mob's position to a random location.
 	mob.position = mob_spawn_location.position
-
+	
 	# Add some randomness to the direction.
 	direction += randf_range(-PI / 4, PI / 4)
 	mob.rotation = direction
-
+	
 	# Choose the velocity for the mob.
 	var velocity = Vector2(randf_range(150.0, 250.0), 0.0)
 	mob.linear_velocity = velocity.rotated(direction)
-
+	
 	# Spawn the mob by adding it to the Main scene.
 	add_child(mob)
 

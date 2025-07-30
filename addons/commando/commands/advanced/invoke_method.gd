@@ -9,7 +9,7 @@ func execute(_event: GameEvent) -> void:
 	if source != null:
 		if !source.has_method(method_name):
 			push_warning("%s: Node '%s' has no method named '%s'" % \
-			[_event.name, source.name, method_name])
+				[_event.name, source.name, method_name])
 			finished.emit()
 			return
 		
