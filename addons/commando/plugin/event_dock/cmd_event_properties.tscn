@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbipcxsx5kluf"]
+[gd_scene load_steps=4 format=3 uid="uid://cbipcxsx5kluf"]
 
 [ext_resource type="Script" uid="uid://b0lbgbps6s3jd" path="res://addons/commando/plugin/event_dock/cmd_event_properties.gd" id="1_88kn1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvf0o"]
 bg_color = Color(0.129412, 0.14902, 0.180392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ca33d"]
+bg_color = Color(0.168627, 0.211765, 0.266667, 1)
 
 [node name="CmdEventProperties" type="PanelContainer"]
 anchors_preset = 15
@@ -27,8 +30,168 @@ theme_override_constants/margin_bottom = 8
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="EventProperties" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+[node name="MainVBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EPContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/EPContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="MarginContainer/ScrollContainer/MainVBoxContainer/EPContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MainVBoxContainer/EPContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Event Properties"
+horizontal_alignment = 1
+
+[node name="ToggleEPButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/EPContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "v"
+
+[node name="EventProperties" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/EPContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="CondsContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Trigger Conditions"
+horizontal_alignment = 1
+
+[node name="ToggleCondsButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "v"
+
+[node name="OpenCondsEditorButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Open Conditions Editor"
+
+[node name="LevContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer"]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Local Event Variables"
+horizontal_alignment = 1
+
+[node name="ToggleLevButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "v"
+
+[node name="LevContent" type="PanelContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ca33d")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "No Local Event Variables found."
+horizontal_alignment = 1
+
+[node name="LocalEventVariables" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AddLevButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Add Local Event Variable"
+
+[node name="CupContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Custom User Properties"
+horizontal_alignment = 1
+
+[node name="ToggleCupButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "v"
+
+[node name="CupProperties" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/EPContainer/HBoxContainer/ToggleEPButton" to="." method="_on_toggle_ep_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/HBoxContainer/ToggleCondsButton" to="." method="_on_toggle_conds_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/OpenCondsEditorButton" to="." method="_on_open_conds_editor_button"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/HBoxContainer/ToggleLevButton" to="." method="_on_toggle_lev_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer/AddLevButton" to="." method="_on_add_lev_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer/HBoxContainer/ToggleCupButton" to="." method="_on_toggle_cup_button_pressed"]

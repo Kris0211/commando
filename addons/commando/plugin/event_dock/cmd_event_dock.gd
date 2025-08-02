@@ -5,7 +5,7 @@ class_name EditorCmdEventDock extends Container
 const _SELETED_EVENT_TEXT := "Selected event: "
 const _CMD_WINDOW := \
 		preload("res://addons/commando/plugin/window/new_command_window/cmd_new_command_window.tscn")
-const _COND_WINDOW := \
+const COND_WINDOW := \
 		preload("res://addons/commando/plugin/window/condition_group_window/cmd_condition_group_window.tscn")
 
 ## Reference to selected event [Node].
@@ -396,7 +396,7 @@ func on_set_condition_button_pressed(widget: EditorCmdCommandWidget) -> void:
 		return
 	
 	_deselect_all()
-	_window = _COND_WINDOW.instantiate() as EditorCmdConditionGroupWindow
+	_window = COND_WINDOW.instantiate() as EditorCmdConditionGroupWindow
 	if _window != null:
 		add_child(_window)
 		_window.close_requested.connect(_destroy_window.bind(widget))

@@ -1,15 +1,13 @@
-[gd_scene load_steps=38 format=3 uid="uid://cyfwty2q3rdse"]
+[gd_scene load_steps=36 format=3 uid="uid://cyfwty2q3rdse"]
 
 [ext_resource type="Script" uid="uid://bhuekadk6b7ey" path="res://ExampleProject/dodge_the_creeps/Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://rkdnhqgf2hpj" path="res://ExampleProject/dodge_the_creeps/Mob.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://4vwrqjegqwpj" path="res://ExampleProject/dodge_the_creeps/Player.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://ccqoreueuxdb7" path="res://ExampleProject/dodge_the_creeps/HUD.tscn" id="4"]
-[ext_resource type="Script" uid="uid://ccuhgiw8fmjat" path="res://addons/commando/commands/debug/print_debug.gd" id="5_61s5o"]
+[ext_resource type="Script" uid="uid://dc0v2617j2vbi" path="res://addons/commando/commands/condition_data.gd" id="4_c1rru"]
+[ext_resource type="Script" uid="uid://ds7g4c76goeli" path="res://addons/commando/commands/condition_group.gd" id="5_e7cob"]
 [ext_resource type="Script" uid="uid://nrxqi5vgjem8" path="res://addons/commando/commands/game_event.gd" id="6_1fcw8"]
-[ext_resource type="Script" uid="uid://dc0v2617j2vbi" path="res://addons/commando/commands/condition_data.gd" id="6_m12lw"]
-[ext_resource type="Script" uid="uid://ds7g4c76goeli" path="res://addons/commando/commands/condition_group.gd" id="7_gno58"]
 [ext_resource type="Script" uid="uid://cdhv2rc7v2g18" path="res://addons/commando/commands/command.gd" id="7_xhpti"]
-[ext_resource type="Script" uid="uid://412kghknue0w" path="res://addons/commando/commands/flow/condition_branch.gd" id="8_2c4hu"]
 [ext_resource type="Script" uid="uid://7k2d24q2tosq" path="res://addons/commando/commands/advanced/group_method_call.gd" id="8_yl8jt"]
 [ext_resource type="Script" uid="uid://cxhcpqvpmeknc" path="res://addons/commando/commands/variables/set_global_variable.gd" id="9_cxr5e"]
 [ext_resource type="Script" uid="uid://dpvvxnflomnx7" path="res://addons/commando/commands/node_2d/copy_position.gd" id="10_mximh"]
@@ -20,18 +18,8 @@
 [ext_resource type="Script" uid="uid://b0r757hdobf3c" path="res://addons/commando/commands/advanced/manual_event_trigger.gd" id="15_cxr5e"]
 [ext_resource type="Script" uid="uid://tk3hes4pykph" path="res://addons/commando/commands/flow/wait.gd" id="16_c1rru"]
 
-[sub_resource type="Curve2D" id="1"]
-_data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
-}
-point_count = 5
-
-[sub_resource type="Resource" id="Resource_hqq0y"]
-script = ExtResource("5_61s5o")
-debug_message = "yippe!"
-
-[sub_resource type="Resource" id="Resource_wk5pg"]
-script = ExtResource("6_m12lw")
+[sub_resource type="Resource" id="Resource_e6o8k"]
+script = ExtResource("4_c1rru")
 logical_operator = 1
 variable_type = 1
 variable_name = "always_true"
@@ -39,15 +27,23 @@ operator = 1
 compare_type = 3
 compare_value = "false"
 
-[sub_resource type="Resource" id="Resource_e6o8k"]
-script = ExtResource("7_gno58")
-conditions = Array[ExtResource("6_m12lw")]([SubResource("Resource_wk5pg")])
+[sub_resource type="Resource" id="Resource_wk5pg"]
+script = ExtResource("5_e7cob")
+conditions = Array[ExtResource("4_c1rru")]([SubResource("Resource_e6o8k")])
 
-[sub_resource type="Resource" id="Resource_6d4e1"]
-script = ExtResource("8_2c4hu")
-condition = SubResource("Resource_e6o8k")
-commands_if_true = Array[ExtResource("7_xhpti")]([SubResource("Resource_hqq0y")])
-commands_if_false = Array[ExtResource("7_xhpti")]([])
+[sub_resource type="Resource" id="Resource_c7lcw"]
+script = ExtResource("5_e7cob")
+conditions = Array[ExtResource("4_c1rru")]([])
+
+[sub_resource type="Curve2D" id="1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[sub_resource type="Resource" id="Resource_c1rru"]
+script = ExtResource("5_e7cob")
+conditions = Array[ExtResource("4_c1rru")]([])
 
 [sub_resource type="Resource" id="Resource_3l6nf"]
 script = ExtResource("8_yl8jt")
@@ -131,6 +127,10 @@ color = Color(0.219608, 0.372549, 0.380392, 1)
 [node name="StartEvent" parent="Player" index="3"]
 source_node = NodePath("../../HUD")
 signal_name = &"start_game"
+trigger_conditions = SubResource("Resource_wk5pg")
+
+[node name="PlayerBodyEnteredEvent" parent="Player" index="4"]
+trigger_conditions = SubResource("Resource_c7lcw")
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -153,9 +153,11 @@ curve = SubResource("1")
 
 [node name="ButtonPressedEvent" parent="HUD/StartButton" index="0"]
 one_shot = true
+trigger_conditions = SubResource("Resource_c1rru")
 
 [node name="GameOverEvent" parent="HUD" index="4"]
 trigger_mode = 0
+source_node = NodePath("../../Player")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("13_mximh")
@@ -164,7 +166,7 @@ stream = ExtResource("13_mximh")
 script = ExtResource("6_1fcw8")
 source_node = NodePath("../HUD")
 signal_name = &"start_game"
-event_commands = Array[ExtResource("7_xhpti")]([SubResource("Resource_6d4e1"), SubResource("Resource_3l6nf"), SubResource("Resource_61s5o"), SubResource("Resource_m12lw"), SubResource("Resource_mximh"), SubResource("Resource_2c4hu"), SubResource("Resource_kvbqq"), SubResource("Resource_3g5go"), SubResource("Resource_e7cob"), SubResource("Resource_k4btx")])
+event_commands = Array[ExtResource("7_xhpti")]([SubResource("Resource_3l6nf"), SubResource("Resource_61s5o"), SubResource("Resource_m12lw"), SubResource("Resource_mximh"), SubResource("Resource_2c4hu"), SubResource("Resource_kvbqq"), SubResource("Resource_3g5go"), SubResource("Resource_e7cob"), SubResource("Resource_k4btx")])
 metadata/_custom_type_script = "uid://nrxqi5vgjem8"
 
 [node name="OnGameOverEvent" type="Node" parent="."]

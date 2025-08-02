@@ -13,8 +13,11 @@ const EXCLUDED_PROPERTIES := [
 	"condition",
 	"effects_if_true",
 	"effects_if_false",
-	"commands",
 	"event_commands",
+	"process_commands",
+	"_already_triggered",
+	"trigger_conditions",
+	"_local_event_variables",
 	"process_mode",
 	"process_priority",
 	"process_physics_priority",
@@ -24,36 +27,91 @@ const EXCLUDED_PROPERTIES := [
 	"editor_description",
 	"metadata/_custom_type_script",
 ]
+
+## These properties are considered to be built-in plugin provided properties.
+const EVENT_PROPERTIES := [
+	"trigger_mode",
+	"one_shot",
+	"source_node",
+	"signal_name",
+	"trigger_delay",
+]
+
+# All the other properties are considered to be user defined 
+# (i.e. derived classes) and will be added at the bottom as "User Properties"
+
 const _SIGNAL_SELECTOR_SCENE := \
 		preload("res://addons/commando/plugin/event_dock/signal_selector/cmd_signal_selector.tscn")
 
+var _ep_visible: bool = true
+var _conds_visible: bool = true
+var _lev_visible: bool = true
+var _cup_visible: bool = true
+
+# true if an event has user-defined properties (extends GameEvent)
+var _has_cups: bool = false
+
+var _window: Window = null
+
+@onready var _cup_container := %CupContainer as VBoxContainer
+
 @onready var _event_properties := %EventProperties as VBoxContainer
+@onready var _conds_edit_button := %OpenCondsEditorButton as Button
+@onready var _lev_content := %LevContent as PanelContainer
+@onready var _cup_properties := %CupProperties as VBoxContainer
+
+@onready var _toggle_ep_button:= %ToggleEPButton as Button
+@onready var _toggle_conds_button := %ToggleCondsButton as Button
+@onready var _toggle_lev_button := %ToggleLevButton as Button
+@onready var _toggle_cup_button := %ToggleCupButton as Button
 
 
 ## Initializes event properties
 func setup(p_event: GameEvent) -> void:
+	if p_event != EditorCmdEventDock.event_node:
+		printerr("Event mismatch detected. Please re-select event node.")
+	
 	# Clear previous properties
 	for c in _event_properties.get_children():
 		c.queue_free()
 	
 	# Create properties
 	for cproperty: Dictionary in p_event.get_property_list():
-		if cproperty.get("name") == "signal_name":
-			var source_node := p_event.get_node_or_null(p_event.source_node)
-			if source_node:
-				_add_signal_selector(
-					source_node,
-					p_event.signal_name)
+		var cproperty_name: String = cproperty.get("name")
+		if !is_property_exported(cproperty):
 			continue
 		
-		if is_property_exported(cproperty):
-			add_property(cproperty, p_event.get(cproperty.get("name")))
+		if cproperty_name in EVENT_PROPERTIES:
+			if cproperty.get("name") == "signal_name":
+				var source_node := p_event.get_node_or_null(p_event.source_node)
+				if source_node:
+					_add_signal_selector(
+						source_node,
+						p_event.signal_name
+					)
+				continue
+			
+			add_property(
+				cproperty, 
+				p_event.get(cproperty.get("name")), 
+				_event_properties
+			)
+		
+		else: # User-defined property
+			_has_cups = true
+			add_property(
+				cproperty, 
+				p_event.get(cproperty.get("name")), 
+				_cup_properties
+			)
 	
 	_update_property_visibility()
+	_cup_container.set_visible(_has_cups)
 
 
 ## Adds a property to event dock.
-func add_property(p_property: Dictionary, p_value: Variant) -> void:
+func add_property(p_property: Dictionary, p_value: Variant, 
+		p_container: Control) -> void:
 	var property := CmdPropertyFactory.create_property(p_property)
 	if property == null:
 		printerr("Failed to create property for %s!" % p_property)
@@ -119,3 +177,64 @@ func _on_property_changed(p_property_name: String,
 		p_property_name.to_snake_case(), p_property_value)
 	if p_property_name.to_snake_case() == "trigger_mode":
 		_update_property_visibility()
+
+
+func _on_conditions_changed(p_conditions: ConditionGroup) -> void:
+	EditorCmdEventDock.event_node.trigger_conditions = \
+			p_conditions.duplicate(true)
+
+
+func _on_open_conds_editor_button() -> void:
+	if _window:
+		return
+	
+	_window = EditorCmdEventDock.COND_WINDOW.instantiate() \
+			as EditorCmdConditionGroupWindow
+	
+	if _window != null:
+		add_child(_window)
+		_window.changes_commited.connect(_on_conditions_changed)
+		_window.close_requested.connect(_destroy_window)
+		_window.setup(null)
+		_window.popup_centered()
+
+
+func _on_add_lev_button_pressed() -> void:
+	CmdUtils.show_popup("Not implemented yet.", "Coming soon!")
+
+
+func _on_toggle_ep_button_pressed() -> void:
+	_ep_visible =! _ep_visible
+	_toggle_ep_button.text = "v" if _ep_visible else ">"
+	_event_properties.visible = _ep_visible
+
+
+func _on_toggle_conds_button_pressed() -> void:
+	_conds_visible =! _conds_visible
+	_toggle_conds_button.text = "v" if _conds_visible else ">"
+	_conds_edit_button.visible = _conds_visible
+
+
+func _on_toggle_lev_button_pressed() -> void:
+	_lev_visible =! _lev_visible
+	_toggle_lev_button.text = "v" if _lev_visible else ">"
+	_lev_content.visible = _lev_visible
+
+
+func _on_toggle_cup_button_pressed() -> void:
+	_cup_visible =! _cup_visible
+	_toggle_cup_button.text = "v" if _cup_visible else ">"
+	_cup_properties.visible = _cup_visible
+
+
+func _destroy_window() -> void:
+	if !is_instance_valid(_window):
+		return
+	
+	if _window.close_requested.is_connected(_destroy_window):
+		_window.close_requested.disconnect(_destroy_window)
+	if _window.changes_commited.is_connected(_on_conditions_changed):
+		_window.changes_commited.disconnect(_on_conditions_changed)
+	
+	_window.free.call_deferred()
+	_window = null

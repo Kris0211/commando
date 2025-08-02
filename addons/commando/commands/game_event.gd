@@ -23,8 +23,8 @@ const _ZERO_DELAY_WARN := "Trigger delay is set to 0 seconds."
 ## Otherwise, this [GameEvent] will execute commands each time it triggers.
 @export var one_shot: bool = false
 
-@export_group("Signal Trigger")
 
+@export_group("Signal Trigger")
 ## A reference to [Node] that will emit signal this [GameEvent] connects to.
 @export_node_path("Node") var source_node: NodePath
 
@@ -32,8 +32,8 @@ const _ZERO_DELAY_WARN := "Trigger delay is set to 0 seconds."
 ## this [GameEvent] will trigger.
 @export var signal_name: StringName
 
-@export_group("Timer")
 
+@export_group("Timer")
 ## Timeout delay (in seconds)
 @export var trigger_delay: float = 1.0
 
@@ -45,7 +45,10 @@ const _ZERO_DELAY_WARN := "Trigger delay is set to 0 seconds."
 ## Should this [GameEvent] keep processing associated [Command]s?
 var process_commands := true
 
-# A [Dictionary] that contains user-defined event variables.
+## A [ConditionGroup] that contains conditions for this event to trigger.
+@export_storage var trigger_conditions: ConditionGroup = null
+
+# A Dictionary that contains user-defined event variables.
 @export_storage var _local_event_variables: Dictionary = {}
 
 # Used when one_shot is true to check if this event has been triggered before.
@@ -102,6 +105,10 @@ func execute() -> void:
 	if one_shot && _already_triggered:
 		return
 	
+	if trigger_conditions != null:
+		if !trigger_conditions.evaluate(self):
+			return
+	
 	_already_triggered = true
 	process_commands = true
 	for cmd: Command in event_commands:
@@ -116,13 +123,6 @@ func execute() -> void:
 		set_process(false)
 		set_physics_process(false)
 
-
-func _start_timer() -> void:
-	if trigger_delay == 0.0:
-		push_warning(_NO_SUCH_SIGNAL_WARN % signal_name)
-	while true:
-		await get_tree().create_timer(trigger_delay).timeout
-		execute()
 
 
 #region EVENT VARIABLES
@@ -157,6 +157,14 @@ func restore(data: Dictionary) -> void:
 	if !data.is_empty():
 		_local_event_variables = data.get("local_event_variables", {})
 #endregion
+
+
+func _start_timer() -> void:
+	if trigger_delay == 0.0:
+		push_warning(_NO_SUCH_SIGNAL_WARN % signal_name)
+	while true:
+		await get_tree().create_timer(trigger_delay).timeout
+		execute()
 
 
 func _on_signal_trigger(_arg1 = null, _arg2 = null, 

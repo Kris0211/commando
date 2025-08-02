@@ -1,6 +1,6 @@
 ## Condition Group Editor [Window].
 ## Provides a visual interface for editing conditions
-## used by [ConditionBranchCommand] and [LoopCommand].
+## used by [GameEvent], [ConditionBranchCommand] and [LoopCommand].
 @tool
 class_name EditorCmdConditionGroupWindow extends Window
 
@@ -26,15 +26,27 @@ func _ready() -> void:
 
 
 ## Initializes this Condition Group Editor.
+## If [param p_widget] is [code]null[/code], 
+## operates in "Event Conditions" mode,
+## affecting the [GameEvent] itself.
 func setup(p_widget: EditorCmdCommandWidget) -> void:
 	for c in _conditions_container.get_children():
 		c.queue_free()
 	
-	var cmd := p_widget.get_command()
-	if !(cmd is ConditionBranchCommand) && !(cmd is LoopCommand):
-		return
+	var condition_group: ConditionGroup = null
 	
-	var condition_group := cmd.condition as ConditionGroup
+	if p_widget != null:
+		var cmd := p_widget.get_command()
+		if !(cmd is ConditionBranchCommand) && !(cmd is LoopCommand):
+			push_warning("The widget '%s' does not support conditions." % \
+					p_widget.get_name())
+			return
+		
+		condition_group = cmd.condition
+	
+	else:
+		condition_group = EditorCmdEventDock.event_node.trigger_conditions
+	
 	if condition_group == null || condition_group.conditions.is_empty():
 		# Ensure writeable array
 		_congroup = ConditionGroup.new()
