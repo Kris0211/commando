@@ -143,15 +143,17 @@ theme_override_constants/margin_bottom = 4
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+[node name="NoLevLabel" type="Label" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "No Local Event Variables found."
 horizontal_alignment = 1
 
-[node name="LocalEventVariables" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+[node name="LocalEventVariablesContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AddLevButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
+[node name="AddLevButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Add Local Event Variable"
@@ -193,5 +195,5 @@ layout_mode = 2
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/HBoxContainer/ToggleCondsButton" to="." method="_on_toggle_conds_button_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/OpenCondsEditorButton" to="." method="_on_open_conds_editor_button"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/HBoxContainer/ToggleLevButton" to="." method="_on_toggle_lev_button_pressed"]
-[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer/AddLevButton" to="." method="_on_add_lev_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/AddLevButton" to="." method="_on_add_lev_button_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer/HBoxContainer/ToggleCupButton" to="." method="_on_toggle_cup_button_pressed"]

@@ -43,6 +43,9 @@ const EVENT_PROPERTIES := [
 const _SIGNAL_SELECTOR_SCENE := \
 		preload("res://addons/commando/plugin/event_dock/signal_selector/cmd_signal_selector.tscn")
 
+const _LEV_PROPERTY_SCENE := \
+		preload("res://addons/commando/plugin/property/lev_property/cmd_lev_property.tscn")
+
 var _ep_visible: bool = true
 var _conds_visible: bool = true
 var _lev_visible: bool = true
@@ -57,7 +60,9 @@ var _window: Window = null
 
 @onready var _event_properties := %EventProperties as VBoxContainer
 @onready var _conds_edit_button := %OpenCondsEditorButton as Button
+@onready var _no_lev_label := %NoLevLabel as Label
 @onready var _lev_content := %LevContent as PanelContainer
+@onready var _lev_container := %LocalEventVariablesContainer as VBoxContainer
 @onready var _cup_properties := %CupProperties as VBoxContainer
 
 @onready var _toggle_ep_button:= %ToggleEPButton as Button
@@ -75,6 +80,60 @@ func setup(p_event: GameEvent) -> void:
 	for c in _event_properties.get_children():
 		c.queue_free()
 	
+	for c in _lev_container.get_children():
+		c.queue_free()
+	
+	_setup_properties(p_event)
+	_setup_levs(p_event)
+	
+	_update_property_visibility()
+	_cup_container.set_visible(_has_cups)
+
+
+## Adds a property to event dock.
+func add_property(p_property: Dictionary, p_value: Variant, 
+		p_container: Control) -> void:
+	var property := CmdPropertyFactory.create_property(p_property)
+	if property == null:
+		printerr("Failed to create property for %s!" % p_property)
+		return
+	
+	_event_properties.add_child(property)
+	property.parent_widget = self
+	
+	property.set_property_value(p_value)
+	property.property_changed.connect(_on_property_changed)
+
+
+## Adds a Local Event Variable to the event.
+func add_local_event_variable(p_name: String, p_value: Variant) -> void:
+	var _lev_property := _LEV_PROPERTY_SCENE.instantiate()
+	_lev_container.add_child(_lev_property)
+	_lev_property.setup(p_name, p_value)
+	_lev_property.lev_edited.connect(_on_lev_edited)
+	_lev_property.delete_requested.connect(remove_local_event_variable)
+
+
+## Removes a Local Event Variable from this event.
+func remove_local_event_variable(
+			p_lev: EditorCmdLocalEventVariableProperty) -> void:
+	EditorCmdEventDock.event_node._local_event_variables.erase(
+			p_lev.get_property_name())
+	p_lev.queue_free()
+	_update_property_visibility()
+
+
+## Static utility function that checks if property is exported
+## and not excluded from use.
+static func is_property_exported(p_property: Dictionary) -> bool:
+	var property_name = p_property.get("name")
+	if p_property.get("usage") & PROPERTY_USAGE_EDITOR == 0:
+		return false
+	
+	return !(property_name in EXCLUDED_PROPERTIES)
+
+
+func _setup_properties(p_event: GameEvent) -> void:
 	# Create properties
 	for cproperty: Dictionary in p_event.get_property_list():
 		var cproperty_name: String = cproperty.get("name")
@@ -104,36 +163,20 @@ func setup(p_event: GameEvent) -> void:
 				p_event.get(cproperty.get("name")), 
 				_cup_properties
 			)
-	
-	_update_property_visibility()
-	_cup_container.set_visible(_has_cups)
 
 
-## Adds a property to event dock.
-func add_property(p_property: Dictionary, p_value: Variant, 
-		p_container: Control) -> void:
-	var property := CmdPropertyFactory.create_property(p_property)
-	if property == null:
-		printerr("Failed to create property for %s!" % p_property)
-		return
-	
-	_event_properties.add_child(property)
-	property.parent_widget = self
-	
-	var property_name = p_property.get("name")
-	property.set_property_name(property_name)
-	property.set_property_value(p_value)
-	property.property_changed.connect(_on_property_changed)
+func _setup_levs(p_event: GameEvent) -> void:
+	var levs := p_event._local_event_variables
+	for lev_name: String in levs.keys():
+		add_local_event_variable(lev_name, levs.get(lev_name))
 
 
-## Static utility function that checks if property is exported
-## and not excluded from use.
-static func is_property_exported(p_property: Dictionary) -> bool:
-	var property_name = p_property.get("name")
-	if p_property.get("usage") & PROPERTY_USAGE_EDITOR == 0:
-		return false
+func _on_lev_edited(p_name: String, p_value: Variant, 
+		p_old_name: String) -> void:
+	if p_name != p_old_name:
+		EditorCmdEventDock.event_node._local_event_variables.erase(p_old_name)
 	
-	return !(property_name in EXCLUDED_PROPERTIES)
+	EditorCmdEventDock.event_node._local_event_variables[p_name] = p_value
 
 
 func _add_signal_selector(source_node: Node, signal_name: StringName) -> void:
@@ -169,6 +212,9 @@ func _update_property_visibility() -> void:
 				)
 			_:
 				property.set_deferred(&"visible", true)
+	
+	await get_tree().process_frame
+	_no_lev_label.set_visible(_lev_container.get_child_count() == 0)
 
 
 func _on_property_changed(p_property_name: String, 

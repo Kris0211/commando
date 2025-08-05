@@ -41,7 +41,8 @@ class DockConfig:
 	var dock_slot: int = EditorPlugin.DockSlot.DOCK_SLOT_RIGHT_UL
 	var use_category_colors: bool = true
 	var display_enum_values: bool = false
-	var max_inheritance_depth: int
+	var max_inheritance_depth: int = 1
+	var show_type_selector: bool = true
 #endregion
 	
 	func load_config() -> void:
@@ -68,6 +69,8 @@ class DockConfig:
 				"use_category_colors", true)
 		max_inheritance_depth = _config.get_value("General",
 				"max_inheritance_depth", 1)
+		show_type_selector = _config.get_value("General",
+				"show_type_selector", true)
 		
 		# Excluded dirs
 		excluded_dirs.clear()

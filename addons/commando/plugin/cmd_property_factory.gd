@@ -40,9 +40,9 @@ static func create_property(p_property: Dictionary) -> EditorCmdCommandProperty:
 	# {"name": "text", "type": TYPE_STRING, 
 	# "hint": PROPERTY_HINT_NONE, "usage": PROPERTY_USAGE_DEFAULT}
 	var property_name: String = p_property.get("name")
-	var property_type: Variant.Type = p_property.get("type")
-	var property_hint: PropertyHint = p_property.get("hint")
-	var property_hint_string: String = p_property.get("hint_string")
+	var property_type: Variant.Type = p_property.get("type", 0)
+	var property_hint: PropertyHint = p_property.get("hint", 0)
+	var property_hint_string: String = p_property.get("hint_string", "")
 	var property_instance: EditorCmdCommandProperty = null
 	
 	match property_type:

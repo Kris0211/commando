@@ -20,11 +20,17 @@ func get_property_name() -> String:
 
 
 ## Sets property display name.
-func set_property_name(p_name: String) -> void: # const
+func set_property_name(p_name: String) -> void:
+	if p_name.is_empty():
+		_label.set_visible(false)
+		return
+	
+	_label.set_visible(true)
 	_label.set_text(p_name.capitalize())
 
 
 ## Sets property value. Value type varies by property.
 @warning_ignore("untyped_declaration")
 func set_property_value(p_value):
+	# This is an abstract method that has to be overriden by derived subclasses.
 	pass

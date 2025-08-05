@@ -49,7 +49,7 @@ var process_commands := true
 @export_storage var trigger_conditions: ConditionGroup = null
 
 # A Dictionary that contains user-defined event variables.
-@export_storage var _local_event_variables: Dictionary = {}
+@export var _local_event_variables: Dictionary = {}
 
 # Used when one_shot is true to check if this event has been triggered before.
 var _already_triggered: bool = false
