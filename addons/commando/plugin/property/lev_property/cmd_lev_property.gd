@@ -17,7 +17,7 @@ const SUPPORTED_TYPES := [
 signal delete_requested(lev: EditorCmdLocalEventVariableProperty)
 signal lev_edited(lev_name: String, lev_value: Variant, old_name: String)
 
-@onready var _property_container := $HBoxContainer as HBoxContainer
+@onready var _property_container := $PropertyContainer as HBoxContainer
 @onready var _name_edit := %NameEdit as LineEdit
 @onready var _change_type_button := %ChangeTypeButton as OptionButton
 @onready var _delete_button := %DeleteButton as Button

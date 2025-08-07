@@ -230,6 +230,15 @@ func _on_conditions_changed(p_conditions: ConditionGroup) -> void:
 			p_conditions.duplicate(true)
 
 
+func _on_new_lev_requested(p_name: String, p_value: Variant) -> void:
+	if p_name.is_empty():
+		CmdUtils.show_popup("Variable name cannot be empty.")
+		return
+	
+	EditorCmdEventDock.event_node._local_event_variables[p_name] = p_value
+	add_local_event_variable(p_name, p_value)
+
+
 func _on_open_conds_editor_button() -> void:
 	if _window:
 		return
@@ -246,7 +255,16 @@ func _on_open_conds_editor_button() -> void:
 
 
 func _on_add_lev_button_pressed() -> void:
-	CmdUtils.show_popup("Not implemented yet.", "Coming soon!")
+	if _window:
+		return
+	
+	_window = EditorCmdEventDock.LEV_WINDOW.instantiate() \
+			as EditorCmdLocalVariableWindow
+	if _window != null:
+		add_child(_window)
+		_window.changes_commited.connect(_on_new_lev_requested)
+		_window.close_requested.connect(_destroy_window)
+		_window.popup_centered()
 
 
 func _on_toggle_ep_button_pressed() -> void:
