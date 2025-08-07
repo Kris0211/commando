@@ -26,9 +26,9 @@ size_flags_horizontal = 3
 
 [node name="CheckBox" type="CheckBox" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 2
 
 [node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 2
 text = "On"

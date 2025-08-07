@@ -68,6 +68,7 @@ func setup(p_name: String, p_value: Variant) -> void:
 		_property_container.add_child(_property)
 		_property.property_editor.size_flags_horizontal = \
 				Control.SIZE_EXPAND_FILL
+		_property.set_property_name("")
 		_property.set_property_value(p_value)
 		_property.property_changed.connect(_on_property_changed)
 
@@ -116,8 +117,10 @@ func _on_change_type_button_item_selected(index: int) -> void:
 	
 	if _property:
 		_property_container.add_child(_property)
+		_property.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		_property.property_editor.size_flags_horizontal = \
 				Control.SIZE_EXPAND_FILL
+		_property.set_property_name("")
 		_property.property_changed.connect(_on_property_changed)
 
 

@@ -129,7 +129,7 @@ source_node = NodePath("../../HUD")
 signal_name = &"start_game"
 trigger_conditions = SubResource("Resource_wk5pg")
 _local_event_variables = {
-"yes": true
+"yes": ""
 }
 
 [node name="PlayerBodyEnteredEvent" parent="Player" index="4"]

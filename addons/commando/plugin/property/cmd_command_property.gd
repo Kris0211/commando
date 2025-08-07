@@ -14,7 +14,7 @@ var parent_widget: Control = null
 @onready var _label: Label = get_child(0) # Assumes label is the first child.
 
 
-## Get displayed property name
+## Returns the displayed property name.
 func get_property_name() -> String:
 	return _label.get_text()
 

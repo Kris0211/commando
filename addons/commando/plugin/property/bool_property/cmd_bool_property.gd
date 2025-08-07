@@ -1,6 +1,5 @@
-## Represents a command property editor for [bool] values.
 @tool
-class_name EditorCmdBoolProperty extends EditorCmdCommandProperty
+extends EditorCmdCommandProperty
 
 var _check_box: CheckBox = null
 
