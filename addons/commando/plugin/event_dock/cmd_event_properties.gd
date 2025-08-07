@@ -17,7 +17,7 @@ const EXCLUDED_PROPERTIES := [
 	"process_commands",
 	"_already_triggered",
 	"trigger_conditions",
-	"_local_event_variables",
+	"local_event_variables",
 	"process_mode",
 	"process_priority",
 	"process_physics_priority",
@@ -83,6 +83,10 @@ func setup(p_event: GameEvent) -> void:
 	for c in _lev_container.get_children():
 		c.queue_free()
 	
+	for c in _cup_properties.get_children():
+		c.queue_free()
+	
+	_has_cups = false
 	_setup_properties(p_event)
 	_setup_levs(p_event)
 	
@@ -91,16 +95,16 @@ func setup(p_event: GameEvent) -> void:
 
 
 ## Adds a property to event dock.
-func add_property(p_property: Dictionary, p_value: Variant, 
-		p_container: Control) -> void:
+func add_property(p_property: Dictionary, p_name: String, 
+		p_value: Variant, p_container: Control) -> void:
 	var property := CmdPropertyFactory.create_property(p_property)
 	if property == null:
 		printerr("Failed to create property for %s!" % p_property)
 		return
 	
-	_event_properties.add_child(property)
+	p_container.add_child(property)
 	property.parent_widget = self
-	
+	property.set_property_name(p_name)
 	property.set_property_value(p_value)
 	property.property_changed.connect(_on_property_changed)
 
@@ -117,7 +121,7 @@ func add_local_event_variable(p_name: String, p_value: Variant) -> void:
 ## Removes a Local Event Variable from this event.
 func remove_local_event_variable(
 			p_lev: EditorCmdLocalEventVariableProperty) -> void:
-	EditorCmdEventDock.event_node._local_event_variables.erase(
+	EditorCmdEventDock.event_node.local_event_variables.erase(
 			p_lev.get_property_name())
 	p_lev.queue_free()
 	_update_property_visibility()
@@ -141,7 +145,7 @@ func _setup_properties(p_event: GameEvent) -> void:
 			continue
 		
 		if cproperty_name in EVENT_PROPERTIES:
-			if cproperty.get("name") == "signal_name":
+			if cproperty_name == "signal_name":
 				var source_node := p_event.get_node_or_null(p_event.source_node)
 				if source_node:
 					_add_signal_selector(
@@ -152,6 +156,7 @@ func _setup_properties(p_event: GameEvent) -> void:
 			
 			add_property(
 				cproperty, 
+				cproperty_name,
 				p_event.get(cproperty.get("name")), 
 				_event_properties
 			)
@@ -160,13 +165,14 @@ func _setup_properties(p_event: GameEvent) -> void:
 			_has_cups = true
 			add_property(
 				cproperty, 
+				cproperty_name,
 				p_event.get(cproperty.get("name")), 
 				_cup_properties
 			)
 
 
 func _setup_levs(p_event: GameEvent) -> void:
-	var levs := p_event._local_event_variables
+	var levs := p_event.local_event_variables
 	for lev_name: String in levs.keys():
 		add_local_event_variable(lev_name, levs.get(lev_name))
 
@@ -174,9 +180,8 @@ func _setup_levs(p_event: GameEvent) -> void:
 func _on_lev_edited(p_name: String, p_value: Variant, 
 		p_old_name: String) -> void:
 	if p_name != p_old_name:
-		EditorCmdEventDock.event_node._local_event_variables.erase(p_old_name)
-	
-	EditorCmdEventDock.event_node._local_event_variables[p_name] = p_value
+		EditorCmdEventDock.event_node.local_event_variables.erase(p_old_name)
+	EditorCmdEventDock.event_node.local_event_variables[p_name] = p_value
 
 
 func _add_signal_selector(source_node: Node, signal_name: StringName) -> void:
@@ -235,7 +240,14 @@ func _on_new_lev_requested(p_name: String, p_value: Variant) -> void:
 		CmdUtils.show_popup("Variable name cannot be empty.")
 		return
 	
-	EditorCmdEventDock.event_node._local_event_variables[p_name] = p_value
+	var levs := EditorCmdEventDock.event_node.local_event_variables
+	if !levs.is_read_only():
+		EditorCmdEventDock.event_node.local_event_variables[p_name] = p_value
+	else:
+	# Force mutable dictionary and refresh editor to update cache
+		EditorCmdEventDock.selection.clear()
+		EditorCmdEventDock.event_node.local_event_variables = {p_name: p_value}
+		EditorInterface.edit_node(EditorCmdEventDock.event_node)
 	add_local_event_variable(p_name, p_value)
 
 

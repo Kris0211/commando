@@ -153,13 +153,14 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="AddLevButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer"]
+[node name="AddLevButton" type="Button" parent="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Add Local Event Variable"
 
 [node name="CupContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="HSeparator3" type="HSeparator" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer"]
@@ -190,10 +191,11 @@ text = "v"
 [node name="CupProperties" type="VBoxContainer" parent="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
 
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/EPContainer/HBoxContainer/ToggleEPButton" to="." method="_on_toggle_ep_button_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/HBoxContainer/ToggleCondsButton" to="." method="_on_toggle_conds_button_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CondsContainer/OpenCondsEditorButton" to="." method="_on_open_conds_editor_button"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/HBoxContainer/ToggleLevButton" to="." method="_on_toggle_lev_button_pressed"]
-[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/AddLevButton" to="." method="_on_add_lev_button_pressed"]
+[connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/LevContainer/LevContent/MarginContainer/VBoxContainer/AddLevButton" to="." method="_on_add_lev_button_pressed"]
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MainVBoxContainer/CupContainer/HBoxContainer/ToggleCupButton" to="." method="_on_toggle_cup_button_pressed"]

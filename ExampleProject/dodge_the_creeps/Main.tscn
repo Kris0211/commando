@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cyfwty2q3rdse"]
+[gd_scene load_steps=37 format=3 uid="uid://cyfwty2q3rdse"]
 
 [ext_resource type="Script" uid="uid://bhuekadk6b7ey" path="res://ExampleProject/dodge_the_creeps/Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://rkdnhqgf2hpj" path="res://ExampleProject/dodge_the_creeps/Mob.tscn" id="2"]
@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://caqm82ukdydai" path="res://addons/commando/commands/sound/play_music.gd" id="14_1wi6u"]
 [ext_resource type="Script" uid="uid://b0r757hdobf3c" path="res://addons/commando/commands/advanced/manual_event_trigger.gd" id="15_cxr5e"]
 [ext_resource type="Script" uid="uid://tk3hes4pykph" path="res://addons/commando/commands/flow/wait.gd" id="16_c1rru"]
+[ext_resource type="Script" uid="uid://bdp6jer2d71wy" path="res://ExampleProject/user_event.gd" id="18_e7cob"]
 
 [sub_resource type="Resource" id="Resource_e6o8k"]
 script = ExtResource("4_c1rru")
@@ -126,12 +127,8 @@ color = Color(0.219608, 0.372549, 0.380392, 1)
 
 [node name="StartEvent" parent="Player" index="3"]
 source_node = NodePath("../../HUD")
-signal_name = &"start_game"
+signal_name = &""
 trigger_conditions = SubResource("Resource_wk5pg")
-_local_event_variables = {
-"boolean": true,
-"yes": "g"
-}
 
 [node name="PlayerBodyEnteredEvent" parent="Player" index="4"]
 trigger_conditions = SubResource("Resource_c7lcw")
@@ -179,6 +176,11 @@ source_node = NodePath("../Player")
 signal_name = &"hit"
 event_commands = Array[ExtResource("7_xhpti")]([SubResource("Resource_yl8jt"), SubResource("Resource_cxr5e"), SubResource("Resource_gno58"), SubResource("Resource_1wi6u")])
 metadata/_custom_type_script = "uid://nrxqi5vgjem8"
+
+[node name="UserEvent" type="Node" parent="."]
+script = ExtResource("18_e7cob")
+source_node = NodePath("../Player")
+metadata/_custom_type_script = "uid://bdp6jer2d71wy"
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_ScoreTimer_timeout"]

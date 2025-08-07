@@ -38,6 +38,7 @@ func _ready() -> void:
 	
 	_change_type_button.item_selected.connect(_on_type_changed)
 	_change_type_button.select(0)
+	_on_type_changed(0)
 
 
 func finalize() -> void:
@@ -61,10 +62,6 @@ func _on_type_changed(index: int) -> void:
 		_property.queue_free()
 		_property = null
 	
-	if index == TYPE_NIL:
-		_create_empty_property("<null>")
-		return
-	
 	var _type = _change_type_button.get_item_text(index)
 	var _hint = PROPERTY_HINT_RESOURCE_TYPE \
 			if _type == "Object" else PropertyHint.PROPERTY_HINT_NONE
@@ -84,25 +81,13 @@ func _on_type_changed(index: int) -> void:
 		_property.property_changed.connect(_on_property_value_changed)
 
 
-func _on_property_value_changed(_name: String, value: Variant) -> void:
-	_property_value = value
-
-
-func _create_empty_property(p_text: String) -> void:
-	_property = LineEdit.new()
-	_property.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_property_container.add_child(_property)
-	var _line_edit := _property as LineEdit
-	_line_edit.set_text(p_text)
-	_line_edit.editable = false
-	_property.property_changed.connect(
-		_on_property_value_changed.bind("", null)
-	)
-
-
 func _type_from_string(type: String) -> int:
 	for i: int in range(Variant.Type.TYPE_MAX + 1):
 		if type == type_string(i):
 			return i
 	
 	return TYPE_NIL
+
+
+func _on_property_value_changed(_name: String, value: Variant) -> void:
+	_property_value = value

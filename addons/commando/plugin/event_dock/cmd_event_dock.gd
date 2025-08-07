@@ -18,7 +18,7 @@ static var event_node: GameEvent = null
 var category_commands_map: Dictionary = {}
 
 ## [EditorSelection] for currently edited node
-var selection: EditorSelection = null
+static var selection: EditorSelection = null
 
 ## [ScriptCreateDialog] used by the editor
 var script_create_dialog: ScriptCreateDialog = null

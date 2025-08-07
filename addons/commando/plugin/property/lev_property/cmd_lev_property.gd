@@ -3,7 +3,6 @@
 class_name EditorCmdLocalEventVariableProperty extends HBoxContainer
 
 const SUPPORTED_TYPES := [
-	TYPE_NIL,
 	TYPE_BOOL,
 	TYPE_INT,
 	TYPE_FLOAT,
@@ -43,10 +42,6 @@ func setup(p_name: String, p_value: Variant) -> void:
 	var _type := typeof(p_value)
 	if !SUPPORTED_TYPES.has(_type):
 		_create_empty_property("<unsupported>")
-		return
-	
-	if _type == TYPE_NIL:
-		_create_empty_property("<null>")
 		return
 	
 	for i: int in _change_type_button.item_count:

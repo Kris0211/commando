@@ -76,7 +76,8 @@ func setup(p_command: Command, p_dock: Control, p_container: Container) -> void:
 	# Create properties
 	for cproperty: Dictionary in p_command.get_property_list():
 		if EditorCmdEventProperties.is_property_exported(cproperty):
-			add_property(cproperty, p_command.get(cproperty.get("name")))
+			var property_name: String = cproperty.get("name")
+			add_property(cproperty, property_name, p_command.get(property_name))
 	
 	# Connect selection signal
 	_top_panel.clicked_on.connect(_on_selected)
@@ -84,7 +85,8 @@ func setup(p_command: Command, p_dock: Control, p_container: Container) -> void:
 
 
 ## Adds a new [EditorCmdCommandProperty] to this widget.
-func add_property(p_property: Dictionary, p_value: Variant) -> void:
+func add_property(p_property: Dictionary, p_name: String, 
+		p_value: Variant) -> void:
 	var property := CmdPropertyFactory.create_property(p_property)
 	if property == null:
 		printerr("Failed to create property for %s!" % p_property)
@@ -93,8 +95,7 @@ func add_property(p_property: Dictionary, p_value: Variant) -> void:
 	_content_container.add_child(property)
 	property.parent_widget = self
 	
-	var property_name = p_property.get("name")
-	property.set_property_name(property_name)
+	property.set_property_name(p_name)
 	property.set_property_value(p_value)
 	property.property_changed.connect(_on_property_changed)
 

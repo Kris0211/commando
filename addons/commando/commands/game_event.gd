@@ -49,7 +49,7 @@ var process_commands := true
 @export_storage var trigger_conditions: ConditionGroup = null
 
 # A Dictionary that contains user-defined event variables.
-@export var _local_event_variables: Dictionary = {}
+@export var local_event_variables: Dictionary = {}
 
 # Used when one_shot is true to check if this event has been triggered before.
 var _already_triggered: bool = false
@@ -129,16 +129,16 @@ func execute() -> void:
 ## Sets a local event variable value.
 ## If a local event variable does not exist beforehand, adds it.
 func set_local_event_variable(lev_name: String, lev_value: Variant) -> void:
-	_local_event_variables[lev_name] = lev_value
+	local_event_variables[lev_name] = lev_value
 
 
 ## Returns a value of a local event variable.
 ## Returns [code]null[/code] if a local event variable does not exitst.
 func get_local_event_variable(lev_name: String) -> Variant:
-	if !_local_event_variables.has(lev_name):
+	if !local_event_variables.has(lev_name):
 		push_warning("Local event variable '%s' not found." % lev_name)
 	
-	return _local_event_variables.get(lev_name, null)
+	return local_event_variables.get(lev_name, null)
 #endregion
 
 
@@ -147,7 +147,7 @@ func get_local_event_variable(lev_name: String) -> Variant:
 ## Use this method to save the state of this Event for use in save system.
 func serialize() -> Dictionary:
 	return {
-		"local_event_variables": _local_event_variables,
+		"local_event_variables": local_event_variables,
 	}
 
 
@@ -155,7 +155,7 @@ func serialize() -> Dictionary:
 ## Use this method to restore state from saved game.
 func restore(data: Dictionary) -> void:
 	if !data.is_empty():
-		_local_event_variables = data.get("local_event_variables", {})
+		local_event_variables = data.get("local_event_variables", {})
 #endregion
 
 

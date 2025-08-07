@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cuvfg7ryjjhwg" path="res://addons/commando/plugin/property/node_path_property/cmd_node_path_property.gd" id="1_0gkh5"]
 
 [node name="CmdNodePathProperty" type="HBoxContainer"]
+size_flags_horizontal = 3
 size_flags_vertical = 4
 script = ExtResource("1_0gkh5")
 

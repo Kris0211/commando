@@ -29,8 +29,8 @@ func execute(_event: GameEvent) -> void:
 		finished.emit()
 		return
 	
-	var _this_lec := _event._local_event_variables
-	var _other_lec := other._local_event_variables
+	var _this_lec := _event.local_event_variables
+	var _other_lec := other.local_event_variables
 	match sync_method:
 		ESyncDirection.FROM_OTHER:
 			_this_lec.merge(_other_lec, force_overwrite)
@@ -38,11 +38,11 @@ func execute(_event: GameEvent) -> void:
 			_other_lec.merge(_this_lec, force_overwrite)
 		ESyncDirection.MERGE_THIS:
 			var _merged := _this_lec.merged(_other_lec, force_overwrite)
-			_event._local_event_variables = _merged
-			other._local_event_variables = _merged
+			_event.local_event_variables = _merged
+			other.local_event_variables = _merged
 		ESyncDirection.MERGE_OTHER:
 			var _merged := _other_lec.merged(_this_lec, force_overwrite)
-			_event._local_event_variables = _merged
-			other._local_event_variables = _merged
+			_event.local_event_variables = _merged
+			other.local_event_variables = _merged
 	
 	finished.emit()
