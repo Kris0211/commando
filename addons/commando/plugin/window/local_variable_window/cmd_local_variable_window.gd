@@ -1,0 +1,1 @@
+class_name EditorCmdLocalVariableWindow extends Window
