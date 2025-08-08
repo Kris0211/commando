@@ -2,18 +2,23 @@
 @tool
 class_name EditorCmdLocalEventVariableProperty extends HBoxContainer
 
+## Types supported by Local Event Variables.
+## The constants correspond to [b]Variant.Type[/b] enum values.
 const SUPPORTED_TYPES := [
-	TYPE_BOOL,
-	TYPE_INT,
-	TYPE_FLOAT,
-	TYPE_COLOR,
+	TYPE_BOOL, 
+	TYPE_INT, 
+	TYPE_FLOAT, 
 	TYPE_STRING,
-	TYPE_STRING_NAME,
-	TYPE_NODE_PATH,
-	TYPE_OBJECT
+	TYPE_STRING_NAME, ## @experimental
+	TYPE_COLOR,
+	TYPE_NODE_PATH, ## @experimental
+	#TYPE_OBJECT ##@deprecated
 ]
 
+## Emitted when users want to delete a Local Event Variable from edited event.
 signal delete_requested(lev: EditorCmdLocalEventVariableProperty)
+## Emitted when a Local Event Variable name or value changes.[br]
+## NOTE: Currently renaming variables is not supported.
 signal lev_edited(lev_name: String, lev_value: Variant, old_name: String)
 
 @onready var _property_container := $PropertyContainer as HBoxContainer
@@ -36,6 +41,7 @@ func _ready() -> void:
 		_change_type_button.add_icon_item(icon, type_name, type_enum)
 
 
+## Initializes this Local Event Variable property editor.
 func setup(p_name: String, p_value: Variant) -> void:
 	_name_edit.set_text(p_name)
 	
@@ -68,6 +74,7 @@ func setup(p_name: String, p_value: Variant) -> void:
 		_property.property_changed.connect(_on_property_changed)
 
 
+## Returns the name of a property associated with this editor.
 func get_property_name() -> String:
 	return _name_edit.get_text()
 
