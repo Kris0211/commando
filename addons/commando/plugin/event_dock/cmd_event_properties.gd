@@ -116,6 +116,8 @@ func add_local_event_variable(p_name: String, p_value: Variant) -> void:
 	_lev_property.setup(p_name, p_value)
 	_lev_property.lev_edited.connect(_on_lev_edited)
 	_lev_property.delete_requested.connect(remove_local_event_variable)
+	
+	_no_lev_label.set_visible(_lev_container.get_child_count() == 0)
 
 
 ## Removes a Local Event Variable from this event.
@@ -124,7 +126,9 @@ func remove_local_event_variable(
 	EditorCmdEventDock.event_node.local_event_variables.erase(
 			p_lev.get_property_name())
 	p_lev.queue_free()
-	_update_property_visibility()
+	
+	await get_tree().process_frame
+	_no_lev_label.set_visible(_lev_container.get_child_count() == 0)
 
 
 ## Static utility function that checks if property is exported

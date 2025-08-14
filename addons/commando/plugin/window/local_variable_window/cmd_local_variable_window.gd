@@ -43,6 +43,10 @@ func _ready() -> void:
 
 func finalize() -> void:
 	if is_instance_valid(_property):
+		if _property_value == null:
+			# If the user never touched the editor, 
+			# use whatever value the current property control holds.
+			_property.get_property_value()
 		if _property.property_changed.is_connected(_on_property_value_changed):
 			_property.property_changed.disconnect(_on_property_value_changed)
 		_property.queue_free()
@@ -62,13 +66,13 @@ func _on_type_changed(index: int) -> void:
 		_property.queue_free()
 		_property = null
 	
-	var _type = _change_type_button.get_item_text(index)
-	var _hint = PROPERTY_HINT_RESOURCE_TYPE \
-			if _type == "Object" else PropertyHint.PROPERTY_HINT_NONE
+	var _type = _change_type_button.get_item_id(index)
+	var _hint = PropertyHint.PROPERTY_HINT_NONE #PROPERTY_HINT_RESOURCE_TYPE \
+			#if _type_id == TYPE_OBJECT else PropertyHint.PROPERTY_HINT_NONE
 	_property = CmdPropertyFactory.create_property(
 		{
 			"name": String(),
-			"type": _type_from_string(_type),
+			"type": _type,
 			"hint": _hint,
 		}
 	)
@@ -78,15 +82,28 @@ func _on_type_changed(index: int) -> void:
 		_property.property_editor.size_flags_horizontal = \
 				Control.SIZE_EXPAND_FILL
 		_property.set_property_name("")
+		_property_value = _get_default_value(_type)
 		_property.property_changed.connect(_on_property_value_changed)
 
 
-func _type_from_string(type: String) -> int:
-	for i: int in range(Variant.Type.TYPE_MAX + 1):
-		if type == type_string(i):
-			return i
-	
-	return TYPE_NIL
+func _get_default_value(p_type: Variant.Type) -> Variant:
+	match p_type:
+		TYPE_BOOL: 
+			return false
+		TYPE_INT: 
+			return 0
+		TYPE_FLOAT: 
+			return 0.0
+		TYPE_STRING: 
+			return ""
+		TYPE_STRING_NAME: 
+			return &""
+		TYPE_COLOR: 
+			return Color.BLACK
+		TYPE_NODE_PATH: 
+			return ^""
+		_: 
+			return null
 
 
 func _on_property_value_changed(_name: String, value: Variant) -> void:
