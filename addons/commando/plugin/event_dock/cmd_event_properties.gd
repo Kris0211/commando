@@ -244,10 +244,11 @@ func _on_new_lev_requested(p_name: String, p_value: Variant) -> void:
 	if !levs.is_read_only():
 		EditorCmdEventDock.event_node.local_event_variables[p_name] = p_value
 	else:
-	# Force mutable dictionary and refresh editor to update cache
+		# Force mutable dictionary and refresh editor to update cache
 		EditorCmdEventDock.selection.clear()
 		EditorCmdEventDock.event_node.local_event_variables = {p_name: p_value}
 		EditorInterface.edit_node(EditorCmdEventDock.event_node)
+	
 	add_local_event_variable(p_name, p_value)
 
 

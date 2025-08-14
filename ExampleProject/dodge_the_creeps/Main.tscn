@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cyfwty2q3rdse"]
+[gd_scene load_steps=39 format=3 uid="uid://cyfwty2q3rdse"]
 
 [ext_resource type="Script" uid="uid://bhuekadk6b7ey" path="res://ExampleProject/dodge_the_creeps/Main.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://rkdnhqgf2hpj" path="res://ExampleProject/dodge_the_creeps/Mob.tscn" id="2"]
@@ -111,6 +111,19 @@ script = ExtResource("11_c1rru")
 source_node = NodePath("../Music")
 method_name = "stop"
 
+[sub_resource type="Resource" id="Resource_lkmft"]
+script = ExtResource("4_c1rru")
+logical_operator = 1
+variable_type = 1
+variable_name = ""
+operator = 0
+compare_type = 0
+compare_value = ""
+
+[sub_resource type="Resource" id="Resource_hqq0y"]
+script = ExtResource("5_e7cob")
+conditions = Array[ExtResource("4_c1rru")]([SubResource("Resource_lkmft")])
+
 [node name="Game" type="Node"]
 script = ExtResource("1")
 mob_scene = ExtResource("2")
@@ -180,6 +193,7 @@ metadata/_custom_type_script = "uid://nrxqi5vgjem8"
 [node name="UserEvent" type="Node" parent="."]
 script = ExtResource("18_e7cob")
 source_node = NodePath("../Player")
+trigger_conditions = SubResource("Resource_hqq0y")
 metadata/_custom_type_script = "uid://bdp6jer2d71wy"
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]

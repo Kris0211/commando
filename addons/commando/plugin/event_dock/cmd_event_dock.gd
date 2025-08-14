@@ -315,6 +315,7 @@ func paste_clipboard(p_paste_below: bool = true) -> void:
 	
 	for cmd: Command in _clipboard:
 		var pasted_command := cmd.duplicate(true) as Command
+		pasted_command.set_scene_unique_id(Resource.generate_scene_unique_id())
 		target_commands.insert(idx, pasted_command)
 		
 		var _parent_ref = target_container.parent
